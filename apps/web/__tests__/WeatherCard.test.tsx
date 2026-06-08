@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { vi } from 'vitest';
 import { WeatherCard } from '@/components/WeatherCard';
 import type { RecommendationResult } from '@kledningsapp/recommendation-engine';
 
@@ -85,5 +86,32 @@ describe('WeatherCard', () => {
     const result = { ...mockResult, weather: { ...mockResult.weather, precipitationProb: 0 } };
     render(<WeatherCard result={result} />);
     expect(screen.queryByText(/nedbørssannsynlighet/)).not.toBeInTheDocument();
+  });
+
+  it('shows "Juster vær manuelt" button when onToggleManual is provided', () => {
+    render(<WeatherCard result={mockResult} onToggleManual={vi.fn()} />);
+    expect(screen.getByText(/Juster vær manuelt/)).toBeInTheDocument();
+  });
+
+  it('shows "Tilbake til geo-posisjon" when in manual mode', () => {
+    render(<WeatherCard result={mockResult} isManualMode onToggleManual={vi.fn()} />);
+    expect(screen.getByText(/Tilbake til geo-posisjon/)).toBeInTheDocument();
+  });
+
+  it('shows "Manuell modus" badge when in manual mode', () => {
+    render(<WeatherCard result={mockResult} isManualMode onToggleManual={vi.fn()} />);
+    expect(screen.getByText('Manuell modus')).toBeInTheDocument();
+  });
+
+  it('calls onToggleManual when toggle button is clicked', () => {
+    const handler = vi.fn();
+    render(<WeatherCard result={mockResult} onToggleManual={handler} />);
+    fireEvent.click(screen.getByText(/Juster vær manuelt/));
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not render toggle button when onToggleManual is not provided', () => {
+    render(<WeatherCard result={mockResult} />);
+    expect(screen.queryByText(/Juster vær manuelt/)).not.toBeInTheDocument();
   });
 });

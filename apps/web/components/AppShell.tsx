@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { ActivityType, RecommendationResult } from '@kledningsapp/recommendation-engine';
 import { ActivityPicker } from './ActivityPicker';
 import { WeatherCard } from './WeatherCard';
+import { WeatherOverridePanel } from './WeatherOverridePanel';
+import type { WeatherOverride } from './WeatherOverridePanel';
 import { OutfitDisplay } from './OutfitDisplay';
 import { SafetyWarnings } from './SafetyWarnings';
 
@@ -23,9 +25,18 @@ export function AppShell() {
   const [result, setResult] = useState<RecommendationResult | null>(null);
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [isManualMode, setIsManualMode] = useState(false);
+  const [weatherOverride, setWeatherOverride] = useState<WeatherOverride | null>(null);
+  const locationRef = useRef<Location | null>(null);
 
   const fetchRecommendation = useCallback(
-    async (loc: Location, act: ActivityType, dur: number, sens: number) => {
+    async (
+      loc: Location,
+      act: ActivityType,
+      dur: number,
+      sens: number,
+      override?: WeatherOverride | null,
+    ) => {
       setStatus('loading');
       setError(null);
       try {
@@ -37,6 +48,7 @@ export function AppShell() {
             lon: loc.lon,
             activity: { type: act, durationMinutes: dur },
             user: { sensitivity: sens },
+            ...(override ? { weatherOverride: override } : {}),
           }),
         });
         if (!res.ok) {
@@ -57,16 +69,19 @@ export function AppShell() {
   const requestLocation = useCallback(() => {
     setStatus('locating');
     setError(null);
+    setIsManualMode(false);
+    setWeatherOverride(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const loc: Location = { lat: pos.coords.latitude, lon: pos.coords.longitude };
         setLocation(loc);
+        locationRef.current = loc;
         await fetchRecommendation(loc, activity, duration, sensitivity);
       },
       () => {
-        // Fallback: Oslo sentrum
         const oslo: Location = { lat: 59.9139, lon: 10.7522, name: 'Oslo (standard)' };
         setLocation(oslo);
+        locationRef.current = oslo;
         fetchRecommendation(oslo, activity, duration, sensitivity);
       },
       { timeout: 8000 }
@@ -83,7 +98,36 @@ export function AppShell() {
     setDuration(dur);
     setSensitivity(sens);
     if (location) {
-      fetchRecommendation(location, act, dur, sens);
+      fetchRecommendation(location, act, dur, sens, weatherOverride);
+    }
+  };
+
+  const handleToggleManual = () => {
+    if (isManualMode) {
+      setIsManualMode(false);
+      setWeatherOverride(null);
+      if (location) {
+        fetchRecommendation(location, activity, duration, sensitivity);
+      }
+    } else {
+      if (result) {
+        const override: WeatherOverride = {
+          airTemp: result.weather.airTemp,
+          windSpeed: result.weather.windSpeed,
+          humidity: result.weather.humidity,
+          precipitation: result.weather.precipitation as WeatherOverride['precipitation'],
+          precipitationProb: result.weather.precipitationProb,
+        };
+        setWeatherOverride(override);
+      }
+      setIsManualMode(true);
+    }
+  };
+
+  const handleOverrideChange = (override: WeatherOverride) => {
+    setWeatherOverride(override);
+    if (location) {
+      fetchRecommendation(location, activity, duration, sensitivity, override);
     }
   };
 
@@ -130,17 +174,34 @@ export function AppShell() {
 
       {status === 'done' && result && (
         <>
-          <WeatherCard result={result} locationName={location?.name} />
+          <WeatherCard
+            result={result}
+            locationName={location?.name}
+            isManualMode={isManualMode}
+            onToggleManual={handleToggleManual}
+          />
+          {isManualMode && weatherOverride && (
+            <WeatherOverridePanel
+              initial={weatherOverride}
+              onChange={handleOverrideChange}
+            />
+          )}
           <SafetyWarnings warnings={result.safetyWarnings} />
           <OutfitDisplay result={result} />
         </>
       )}
 
       <footer className="text-center text-xs text-slate-400 pb-4">
-        Værdata fra{' '}
-        <a href="https://api.met.no" className="underline" target="_blank" rel="noopener noreferrer">
-          api.met.no
-        </a>
+        {isManualMode ? (
+          <span className="text-amber-500">Manuell modus — ikke live værdata</span>
+        ) : (
+          <>
+            Værdata fra{' '}
+            <a href="https://api.met.no" className="underline" target="_blank" rel="noopener noreferrer">
+              api.met.no
+            </a>
+          </>
+        )}
       </footer>
     </main>
   );
