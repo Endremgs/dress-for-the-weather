@@ -10,6 +10,7 @@ final class ContentViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let locationService = LocationService.shared
+    private var locationTask: Task<Void, Never>?
 
     func onAppear() {
         locationService.requestLocation()
@@ -17,8 +18,10 @@ final class ContentViewModel: ObservableObject {
     }
 
     private func observeLocation() {
-        Task {
+        locationTask?.cancel()
+        locationTask = Task {
             for await location in locationService.$location.values {
+                guard !Task.isCancelled else { return }
                 guard let loc = location else { continue }
                 await fetchRecommendation(lat: loc.coordinate.latitude, lon: loc.coordinate.longitude)
                 break

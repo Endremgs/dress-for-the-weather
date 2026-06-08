@@ -11,7 +11,6 @@ interface MetTimeseries {
         air_temperature: number;
         wind_speed: number;
         relative_humidity: number;
-        precipitation_amount?: number;
       };
     };
     next_1_hours?: {
@@ -26,7 +25,7 @@ interface MetTimeseries {
 }
 
 function classifyPrecipitation(amount: number): PrecipitationLevel {
-  if (amount === 0) return 'none';
+  if (amount < 0.1) return 'none';
   if (amount < 0.5) return 'light';
   if (amount < 2.0) return 'moderate';
   return 'heavy';

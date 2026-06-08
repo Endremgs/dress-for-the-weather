@@ -82,6 +82,8 @@ function getOuterLayer(
   if (heavyWet) return { required: true, item: 'Hardshell regnjakke', clo: 0.08 };
   if (wet && activity === 'sykling') return { required: true, item: 'Isolert regnjakke (sykling)', clo: 0.10 };
   if (wet) return { required: true, item: 'Lett regnjakke', clo: 0.07 };
+  // Cycling always needs windproof below 15°C — wind exposure is 2–3× normal
+  if (activity === 'sykling' && effectiveTemp < 15) return { required: true, item: 'Vindtett sykkeljakke', clo: 0.08 };
   if (effectiveTemp < -5 || windy) return { required: true, item: 'Vindtett løpe-/sykkeljakke', clo: 0.08 };
   if (effectiveTemp < 5) return { required: false, item: 'Vindjakke (anbefalt)', clo: 0.06 };
   return null;
@@ -154,7 +156,7 @@ function getActivityNotes(
   switch (activity) {
     case 'løping':
       notes.push('Unngå bomull — risiko for hypotermi etter stopp');
-      if (effectiveTemp < 0) notes.push('Kle deg som om det er 10°C varmere enn termometeret');
+      notes.push('Kle deg som om det er 10°C varmere enn termometeret');
       break;
     case 'sykling':
       if (effectiveTemp < 15) notes.push('Kne-varmere anbefalt under 15°C');
@@ -215,7 +217,7 @@ export function buildRecommendations(
   windSpeed: number,
   precipitation: PrecipitationLevel,
   activity: ActivityType
-): Omit<BodyZoneRecommendations, never> & { notes: string[]; summary: string } {
+): BodyZoneRecommendations & { notes: string[]; summary: string } {
   const head = getHeadRecommendation(effectiveTemp);
   const neck = getNeckRecommendation(effectiveTemp);
   const hands = getGloveRecommendation(effectiveTemp, windSpeed);

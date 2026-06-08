@@ -3,6 +3,7 @@ import SwiftUI
 struct WatchRecommendationView: View {
     let result: RecommendationResult
     let activity: ActivityType
+    var locationName: String? = nil
     let onChangeTap: () -> Void
 
     var body: some View {
@@ -16,9 +17,16 @@ struct WatchRecommendationView: View {
                     VStack(alignment: .leading, spacing: 1) {
                         Text("\(result.weather.airTemp, specifier: "%.0f")°C")
                             .font(.headline)
-                        Text("Eff. \(result.effectiveTemp, specifier: "%.0f")°")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            Text("Eff. \(result.effectiveTemp, specifier: "%.0f")°")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            if let name = locationName {
+                                Text("· \(name)")
+                                    .font(.caption2)
+                                    .foregroundStyle(.tertiary)
+                            }
+                        }
                     }
                     Spacer()
                     Button(action: onChangeTap) {
@@ -39,11 +47,11 @@ struct WatchRecommendationView: View {
                             .font(.caption2)
                             .lineLimit(2)
                     }
-                    .foregroundStyle(warningColor(warning.level))
+                    .foregroundStyle(warning.level.swiftUIColor)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 5)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(warningColor(warning.level).opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
+                    .background(warning.level.swiftUIColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
                 }
 
                 Divider()
@@ -92,14 +100,6 @@ struct WatchRecommendationView: View {
         }
     }
 
-    private func warningColor(_ level: WarningLevel) -> Color {
-        switch level {
-        case .critical: return .red
-        case .high:     return .orange
-        case .medium:   return .yellow
-        case .low:      return .blue
-        }
-    }
 }
 
 struct WatchLayerRow: View {

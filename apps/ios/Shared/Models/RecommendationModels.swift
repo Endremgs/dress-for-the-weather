@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Input types
 
@@ -56,12 +57,18 @@ struct UserInput: Codable {
 
 // MARK: - Output types
 
+struct WeatherLocation: Codable {
+    let lat: Double
+    let lon: Double
+}
+
 struct WeatherData: Codable {
     let airTemp: Double
     let windSpeed: Double
     let humidity: Double
     let precipitation: String
     let precipitationProb: Double
+    let location: WeatherLocation
 }
 
 enum WarningLevel: String, Codable {
@@ -82,6 +89,15 @@ enum WarningLevel: String, Codable {
         case .medium:   return "exclamationmark.triangle"
         case .high:     return "exclamationmark.triangle.fill"
         case .critical: return "xmark.octagon.fill"
+        }
+    }
+
+    var swiftUIColor: Color {
+        switch self {
+        case .low:      return .blue
+        case .medium:   return .yellow
+        case .high:     return .orange
+        case .critical: return .red
         }
     }
 }
