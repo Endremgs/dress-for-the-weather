@@ -106,7 +106,7 @@ describe('fetchWeather - grunnleggende mapping', () => {
 });
 
 describe('fetchWeather - nedbørsklassifisering', () => {
-  // Thresholds in classifyPrecipitation: 0 → none, < 0.5 → light, < 2.0 → moderate, >= 2.0 → heavy
+  // Thresholds in classifyPrecipitation: < 0.1 → none, < 0.5 → light, < 2.0 → moderate, >= 2.0 → heavy
 
   test('0 mm → none', async () => {
     mockFetch.mockResolvedValue(metResponse(10, 2, 60, 0, 0));

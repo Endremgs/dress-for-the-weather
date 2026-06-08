@@ -287,8 +287,18 @@ describe('upper body - outer layer', () => {
     expect(r.upperBody.outerLayer).toMatchObject({ required: false, item: 'Vindjakke (anbefalt)' });
   });
 
-  test('no precip, calm, effectiveTemp >= 5 → null', () => {
+  test('no precip, calm, effectiveTemp >= 5 → null (ikke-sykkel)', () => {
     const r = buildRecommendations(15, 2, 'none', 'rusling');
+    expect(r.upperBody.outerLayer).toBeNull();
+  });
+
+  test('sykling, no precip, effectiveTemp < 15 → Vindtett sykkeljakke required (alltid vindtett)', () => {
+    const r = buildRecommendations(10, 2, 'none', 'sykling');
+    expect(r.upperBody.outerLayer).toMatchObject({ required: true, item: 'Vindtett sykkeljakke' });
+  });
+
+  test('sykling, no precip, effectiveTemp >= 15 → null (over 15°C grense)', () => {
+    const r = buildRecommendations(16, 2, 'none', 'sykling');
     expect(r.upperBody.outerLayer).toBeNull();
   });
 });
@@ -448,9 +458,9 @@ describe('activity notes', () => {
     expect(r.notes).toContain('Kle deg som om det er 10°C varmere enn termometeret');
   });
 
-  test('løping >= 0°C: ingen 10°C-varmere-note', () => {
+  test('løping >= 0°C: 10°C-varmere-note vises alltid (domeneregel uten temperaturgrense)', () => {
     const r = buildRecommendations(5, 0, 'none', 'løping');
-    expect(r.notes).not.toContain('Kle deg som om det er 10°C varmere enn termometeret');
+    expect(r.notes).toContain('Kle deg som om det er 10°C varmere enn termometeret');
   });
 
   test('sykling: alltid motvind-advarsel', () => {
