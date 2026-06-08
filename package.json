@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "pnpm --filter web dev",
     "build": "pnpm --filter recommendation-engine build && pnpm --filter web build",
-    "test": "pnpm --filter recommendation-engine test",
+    "test": "pnpm --filter recommendation-engine test && pnpm --filter web test",
+    "test:e2e": "pnpm --filter web test:e2e",
     "lint": "pnpm -r lint"
   }
 }
