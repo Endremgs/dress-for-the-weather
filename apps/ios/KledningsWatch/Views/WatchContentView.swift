@@ -13,7 +13,6 @@ final class WatchViewModel: ObservableObject {
     let locationName = "Oslo"
     private let lat = 59.9139
     private let lon = 10.7522
-    let locationName = "Oslo"
 
     func fetch() async {
         isLoading = true
