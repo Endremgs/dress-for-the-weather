@@ -42,7 +42,7 @@ const ALERT_STYLES: Record<ForecastAlert['type'], { bg: string; border: string; 
 };
 
 export function OutfitDisplay({ result }: { result: RecommendationResult }) {
-  const { garments, notes, summary, forecastAlerts } = result;
+  const { garments, notes, summary, forecastAlerts = [] } = result;
 
   return (
     <div className="space-y-4">
