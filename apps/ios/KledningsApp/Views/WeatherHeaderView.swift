@@ -23,8 +23,8 @@ struct WeatherHeaderView: View {
                 Spacer()
                 VStack(alignment: .trailing, spacing: 6) {
                     WeatherStatRow(icon: precipIcon, text: precipLabel)
-                    WeatherStatRow(icon: "wind", text: "\(result.weather.windSpeed, specifier: "%.1f") m/s")
-                    WeatherStatRow(icon: "humidity", text: "\(result.weather.humidity, specifier: "%.0f")%")
+                    WeatherStatRow(icon: "wind", text: String(format: "%.1f m/s", result.weather.windSpeed))
+                    WeatherStatRow(icon: "humidity", text: String(format: "%.0f%%", result.weather.humidity))
                 }
             }
 

@@ -5,8 +5,8 @@ import AppIntents
 // MARK: - Widget configuration intent
 
 struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Kledningsapp"
-    static var description = IntentDescription("Vis kledningsanbefaling for valgt aktivitet")
+    static let title: LocalizedStringResource = "Kledningsapp"
+    static let description = IntentDescription("Vis kledningsanbefaling for valgt aktivitet")
 
     @Parameter(title: "Aktivitet", default: .rusling)
     var activity: ActivityType
@@ -15,9 +15,9 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     var durationMinutes: Int
 }
 
-extension ActivityType: AppEnum {
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Aktivitet"
-    static var caseDisplayRepresentations: [ActivityType: DisplayRepresentation] = [
+extension ActivityType: AppEnum, @unchecked Sendable {
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Aktivitet"
+    static let caseDisplayRepresentations: [ActivityType: DisplayRepresentation] = [
         .rusling:  DisplayRepresentation(title: "Rusling",  image: .init(systemName: "figure.walk")),
         .løping:   DisplayRepresentation(title: "Løping",   image: .init(systemName: "figure.run")),
         .sykling:  DisplayRepresentation(title: "Sykling",  image: .init(systemName: "figure.outdoor.cycle")),
