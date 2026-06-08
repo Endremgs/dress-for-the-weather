@@ -5,22 +5,32 @@ struct OutfitView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            // Summary
-            Text(result.summary)
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(.blue.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
+            // Summary card
+            HStack(spacing: 12) {
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.title2)
+                    .foregroundStyle(.blue)
+                Text(result.summary)
+                    .font(.subheadline.weight(.semibold))
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            .padding(14)
+            .background(
+                LinearGradient(colors: [.blue.opacity(0.1), .indigo.opacity(0.07)], startPoint: .leading, endPoint: .trailing),
+                in: RoundedRectangle(cornerRadius: 14)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(.blue.opacity(0.2), lineWidth: 1)
+            )
 
-            // Head & neck
-            OutfitSection(title: "Hode og hals", systemImage: "person.crop.circle") {
+            OutfitSection(title: "Hode og hals", systemImage: "person.crop.circle", accentColor: .purple) {
                 ZoneRow(zone: result.garments.head, label: "Hode")
                 ZoneRow(zone: result.garments.neck, label: "Hals")
             }
 
-            // Upper body
-            OutfitSection(title: "Overkropp", systemImage: "tshirt") {
+            OutfitSection(title: "Overkropp", systemImage: "tshirt.fill", accentColor: .blue) {
                 LayerRow(layer: result.garments.upperBody.baseLayer, label: "Grunnlag")
                 if let mid = result.garments.upperBody.midLayer {
                     LayerRow(layer: mid, label: "Mellomlag")
@@ -30,58 +40,50 @@ struct OutfitView: View {
                 }
             }
 
-            // Lower body
-            OutfitSection(title: "Underkropp", systemImage: "figure.stand") {
+            OutfitSection(title: "Underkropp", systemImage: "figure.stand", accentColor: .indigo) {
                 if let base = result.garments.lowerBody.baseLayer {
                     LayerRow(layer: base, label: "Grunnlag")
                 }
                 LayerRow(layer: result.garments.lowerBody.outerLayer, label: "Ytterlag")
             }
 
-            // Hands & feet
-            OutfitSection(title: "Hender og føtter", systemImage: "hand.raised") {
+            OutfitSection(title: "Hender og føtter", systemImage: "hand.raised.fill", accentColor: .teal) {
                 ZoneRow(zone: result.garments.hands, label: "Hender")
                 LayerRow(layer: result.garments.feet, label: "Føtter")
             }
 
-            // Backpack extras
             if !result.garments.backpackExtras.isEmpty {
-                OutfitSection(title: "I sekken / vesken", systemImage: "backpack") {
+                OutfitSection(title: "I sekken / vesken", systemImage: "backpack.fill", accentColor: .green) {
                     ForEach(result.garments.backpackExtras, id: \.self) { extra in
-                        HStack {
+                        HStack(spacing: 10) {
                             Image(systemName: "plus.circle.fill")
                                 .foregroundStyle(.green)
-                                .font(.caption)
+                                .font(.subheadline)
                             Text(extra)
                                 .font(.subheadline)
                             Spacer()
                         }
-                        .padding(.vertical, 6)
-                        .overlay(alignment: .bottom) {
-                            Divider()
-                        }
+                        .padding(.vertical, 8)
+                        .overlay(alignment: .bottom) { Divider() }
                     }
                 }
             }
 
-            // Notes
             if !result.notes.isEmpty {
-                OutfitSection(title: "Merknader", systemImage: "note.text") {
+                OutfitSection(title: "Tips og merknader", systemImage: "lightbulb.fill", accentColor: .orange) {
                     ForEach(result.notes, id: \.self) { note in
-                        HStack(alignment: .top, spacing: 8) {
-                            Image(systemName: "lightbulb")
-                                .foregroundStyle(.yellow)
-                                .font(.caption)
-                                .padding(.top, 2)
+                        HStack(alignment: .top, spacing: 10) {
+                            Image(systemName: "lightbulb.fill")
+                                .foregroundStyle(.orange)
+                                .font(.subheadline)
+                                .padding(.top, 1)
                             Text(note)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                             Spacer()
                         }
-                        .padding(.vertical, 6)
-                        .overlay(alignment: .bottom) {
-                            Divider()
-                        }
+                        .padding(.vertical, 8)
+                        .overlay(alignment: .bottom) { Divider() }
                     }
                 }
             }
@@ -94,25 +96,57 @@ struct OutfitView: View {
 struct OutfitSection<Content: View>: View {
     let title: String
     let systemImage: String
+    let accentColor: Color
     @ViewBuilder let content: Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Label(title, systemImage: systemImage)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.secondary)
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(.systemGray6))
+            HStack(spacing: 8) {
+                Image(systemName: systemImage)
+                    .foregroundStyle(accentColor)
+                    .font(.subheadline)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(accentColor.opacity(0.07))
 
             VStack(spacing: 0) {
                 content
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 14)
         }
-        .background(.background, in: RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.05), radius: 6, y: 2)
+        .background(.background, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(Color(.systemGray5), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
+    }
+}
+
+struct RequiredBadge: View {
+    let required: Bool
+
+    var body: some View {
+        if required {
+            Text("Påkrevd")
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.green)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(.green.opacity(0.12), in: Capsule())
+        } else {
+            Text("Valgfri")
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(Color(.systemGray6), in: Capsule())
+        }
     }
 }
 
@@ -121,22 +155,18 @@ struct ZoneRow: View {
     let label: String
 
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .frame(width: 70, alignment: .leading)
+                .frame(width: 64, alignment: .leading)
             Text(zone.item)
                 .font(.subheadline)
+                .opacity(zone.required ? 1 : 0.65)
             Spacer()
-            if !zone.required {
-                Text("valgfri")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-            }
+            RequiredBadge(required: zone.required)
         }
-        .padding(.vertical, 8)
-        .opacity(zone.required ? 1 : 0.6)
+        .padding(.vertical, 9)
         .overlay(alignment: .bottom) { Divider() }
     }
 }
@@ -146,15 +176,16 @@ struct LayerRow: View {
     let label: String
 
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 10) {
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .frame(width: 70, alignment: .leading)
+                .frame(width: 64, alignment: .leading)
                 .padding(.top, 1)
             VStack(alignment: .leading, spacing: 2) {
                 Text(layer.item)
                     .font(.subheadline)
+                    .opacity(layer.required ? 1 : 0.65)
                 if let material = layer.material {
                     Text(material)
                         .font(.caption)
@@ -162,14 +193,9 @@ struct LayerRow: View {
                 }
             }
             Spacer()
-            if !layer.required {
-                Text("valgfri")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-            }
+            RequiredBadge(required: layer.required)
         }
-        .padding(.vertical, 8)
-        .opacity(layer.required ? 1 : 0.6)
+        .padding(.vertical, 9)
         .overlay(alignment: .bottom) { Divider() }
     }
 }

@@ -3,3 +3,11 @@ node_modules/
 dist/
 *.tsbuildinfo
 .DS_Store
+
+# Xcode user-specific
+xcuserdata/
+*.xcuserstate
+
+# Claude Code local/temporary
+.claude/settings.local.json
+.claude/worktrees/
