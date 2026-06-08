@@ -128,6 +128,14 @@ struct ContentView: View {
                             }
                         )
                         .transition(.opacity.combined(with: .scale(scale: 0.97)))
+                        if !result.weather.forecastWindow.isEmpty {
+                            ForecastTimelineView(
+                                weather: result.weather,
+                                forecastWindow: result.weather.forecastWindow,
+                                durationMinutes: vm.durationMinutes
+                            )
+                            .transition(.opacity)
+                        }
                         if !result.safetyWarnings.isEmpty {
                             SafetyWarningsView(warnings: result.safetyWarnings)
                                 .transition(.opacity)

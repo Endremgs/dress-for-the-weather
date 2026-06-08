@@ -18,6 +18,7 @@ export interface ForecastEntry {
   windSpeed: number;
   precipitation: PrecipitationLevel;
   precipitationProb: number;
+  cloudCover?: number; // 0–100 %
 }
 
 export type ForecastAlertType = 'regn' | 'temperaturfall' | 'vindøkning';

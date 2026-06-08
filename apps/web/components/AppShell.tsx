@@ -8,6 +8,7 @@ import { WeatherOverridePanel } from './WeatherOverridePanel';
 import type { WeatherOverride } from './WeatherOverridePanel';
 import { OutfitDisplay } from './OutfitDisplay';
 import { SafetyWarnings } from './SafetyWarnings';
+import { ForecastTimeline } from './ForecastTimeline';
 
 interface Location {
   lat: number;
@@ -186,6 +187,7 @@ export function AppShell() {
               onChange={handleOverrideChange}
             />
           )}
+          <ForecastTimeline weather={result.weather} durationMinutes={duration} />
           <SafetyWarnings warnings={result.safetyWarnings} />
           <OutfitDisplay result={result} />
         </>

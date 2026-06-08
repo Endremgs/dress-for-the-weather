@@ -38,13 +38,17 @@ function extractForecastEntry(entry: MetTimeseries): ForecastEntry {
   const next6h = entry.data.next_6_hours;
   const precipAmount = next1h?.details.precipitation_amount ?? next6h?.details.precipitation_amount ?? 0;
   const precipProb = next1h?.details.probability_of_precipitation ?? next6h?.details.probability_of_precipitation ?? 0;
-  return {
+  const result: ForecastEntry = {
     time: entry.time,
     airTemp: inst.air_temperature,
     windSpeed: inst.wind_speed,
     precipitation: classifyPrecipitation(precipAmount),
     precipitationProb: precipProb,
   };
+  if (inst.cloud_area_fraction !== undefined) {
+    result.cloudCover = inst.cloud_area_fraction;
+  }
+  return result;
 }
 
 export async function fetchWeather(location: Location, durationMinutes = 60): Promise<WeatherInput> {
