@@ -91,11 +91,11 @@ struct WatchRecommendationView: View {
                             .font(.caption2)
                             .lineLimit(2)
                     }
-                    .foregroundStyle(warningColor(warning.level))
+                    .foregroundStyle(warning.level.swiftUIColor)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 5)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(warningColor(warning.level).opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
+                    .background(warning.level.swiftUIColor.opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
                 }
 
                 Divider()
@@ -144,14 +144,6 @@ struct WatchRecommendationView: View {
         }
     }
 
-    private func warningColor(_ level: WarningLevel) -> Color {
-        switch level {
-        case .critical: return .red
-        case .high:     return .orange
-        case .medium:   return .yellow
-        case .low:      return .blue
-        }
-    }
 }
 
 struct WatchLayerRow: View {

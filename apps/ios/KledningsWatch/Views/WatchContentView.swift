@@ -8,7 +8,9 @@ final class WatchViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
 
-    // Oslo as default — watch has no location API in independent mode
+    // Oslo fallback — Watch has no independent location API
+    // WatchConnectivity could push the iPhone's location here in a future update
+    let locationName = "Oslo"
     private let lat = 59.9139
     private let lon = 10.7522
     let locationName = "Oslo"

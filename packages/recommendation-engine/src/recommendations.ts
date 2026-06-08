@@ -160,7 +160,7 @@ function getOuterLayer(
     if (wet) return { required: true, item: 'Sykkeljakke regn (vanntett)', clo: 0.18 };
     if (effectiveTemp < -5) return { required: true, item: 'Sykkeljakke vinter (termisk, isolert)', clo: 0.47 };
     if (effectiveTemp < 4) return { required: true, item: 'Sykkeljakke softshell', clo: 0.35 };
-    if (effectiveTemp < 10) return { required: true, item: 'Sykkeljakke vindtett (packable)', clo: 0.22 };
+    if (effectiveTemp < 15) return { required: true, item: 'Vindtett sykkeljakke', clo: 0.22 };
     if (effectiveTemp < 16) return { required: false, item: 'Sykkelvest/gilet (anbefalt)', clo: 0.15 };
     return null;
   }
@@ -260,7 +260,7 @@ function getActivityNotes(
   switch (activity) {
     case 'løping':
       notes.push('Unngå bomull — risiko for hypotermi etter stopp');
-      if (effectiveTemp < 0) notes.push('Kle deg som om det er 10°C varmere enn termometeret');
+      notes.push('Kle deg som om det er 10°C varmere enn termometeret');
       if (effectiveTemp < -5) notes.push('Vurder innendørstrening');
       break;
     case 'sykling':
