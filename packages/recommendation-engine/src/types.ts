@@ -58,6 +58,8 @@ export interface BodyZoneRecommendations {
   hands: ZoneRecommendation;
   feet: LayerRecommendation;
   backpackExtras: string[];
+  /** Sikkerhetsutstyr og aktivitetsspesifikt utstyr (hjelm, goggles, sele etc.) */
+  mandatoryGear: string[];
 }
 
 export interface SafetyWarning {
