@@ -27,7 +27,8 @@ actor APIService {
         lon: Double,
         activity: ActivityType,
         durationMinutes: Int,
-        sensitivity: Int = 0
+        sensitivity: Int = 0,
+        weatherOverride: WeatherOverride? = nil
     ) async throws -> RecommendationResult {
         guard let url = URL(string: "\(baseURL)/api/recommend") else {
             throw APIError.badURL
@@ -37,7 +38,8 @@ actor APIService {
             lat: lat,
             lon: lon,
             activity: ActivityInput(type: activity, durationMinutes: durationMinutes),
-            user: UserInput(sensitivity: sensitivity)
+            user: UserInput(sensitivity: sensitivity),
+            weatherOverride: weatherOverride
         )
 
         var request = URLRequest(url: url)

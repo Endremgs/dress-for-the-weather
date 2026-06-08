@@ -3,15 +3,27 @@ import SwiftUI
 struct WeatherHeaderView: View {
     let result: RecommendationResult
     let locationName: String?
+    var isManualMode: Bool = false
+    var onToggleManual: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 6) {
-                    if let name = locationName {
-                        Label(name, systemImage: "location.fill")
-                            .font(.subheadline)
-                            .foregroundStyle(.white.opacity(0.85))
+                    HStack(spacing: 8) {
+                        if let name = locationName {
+                            Label(name, systemImage: "location.fill")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.85))
+                        }
+                        if isManualMode {
+                            Text("MANUELL")
+                                .font(.caption2.weight(.bold))
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 3)
+                                .background(Color.yellow.opacity(0.85), in: Capsule())
+                                .foregroundStyle(Color(white: 0.15))
+                        }
                     }
                     HStack(alignment: .firstTextBaseline, spacing: 2) {
                         Text("\(result.weather.airTemp, specifier: "%.0f")")
@@ -68,6 +80,27 @@ struct WeatherHeaderView: View {
                     value: String(format: "%.2f", result.targetClo),
                     label: "CLO"
                 )
+            }
+
+            if let toggle = onToggleManual {
+                Divider().overlay(.white.opacity(0.25))
+                Button(action: toggle) {
+                    Label(
+                        isManualMode ? "Tilbake til geo-posisjon" : "Juster vær manuelt",
+                        systemImage: isManualMode ? "location.fill" : "slider.horizontal.3"
+                    )
+                    .font(.subheadline.weight(.medium))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .background(
+                        isManualMode
+                            ? Color.yellow.opacity(0.2)
+                            : Color.white.opacity(0.12),
+                        in: RoundedRectangle(cornerRadius: 12)
+                    )
+                    .foregroundStyle(.white)
+                }
+                .buttonStyle(.plain)
             }
         }
         .foregroundStyle(.white)

@@ -178,6 +178,16 @@ struct RecommendationResult: Codable {
     let forecastAlerts: [ForecastAlert]
 }
 
+// MARK: - Weather override
+
+struct WeatherOverride: Encodable {
+    var airTemp: Double
+    var windSpeed: Double
+    var humidity: Double
+    var precipitation: String
+    var precipitationProb: Double
+}
+
 // MARK: - API request
 
 struct RecommendRequest: Encodable {
@@ -185,4 +195,5 @@ struct RecommendRequest: Encodable {
     let lon: Double
     let activity: ActivityInput
     let user: UserInput
+    let weatherOverride: WeatherOverride?
 }

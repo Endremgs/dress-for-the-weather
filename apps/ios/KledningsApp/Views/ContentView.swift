@@ -8,6 +8,11 @@ final class ContentViewModel: ObservableObject {
     @Published var result: RecommendationResult?
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var isManualMode = false
+    @Published var showOverrideSheet = false
+    @Published var currentOverride = WeatherOverride(
+        airTemp: 10, windSpeed: 3, humidity: 70, precipitation: "none", precipitationProb: 0
+    )
 
     private let locationService = LocationService.shared
     private var locationTask: Task<Void, Never>?
@@ -29,7 +34,7 @@ final class ContentViewModel: ObservableObject {
         }
     }
 
-    func fetchRecommendation(lat: Double, lon: Double) async {
+    func fetchRecommendation(lat: Double, lon: Double, weatherOverride: WeatherOverride? = nil) async {
         isLoading = true
         errorMessage = nil
         do {
@@ -37,7 +42,8 @@ final class ContentViewModel: ObservableObject {
                 lat: lat, lon: lon,
                 activity: selectedActivity,
                 durationMinutes: durationMinutes,
-                sensitivity: sensitivity
+                sensitivity: sensitivity,
+                weatherOverride: weatherOverride
             )
         } catch {
             errorMessage = error.localizedDescription
@@ -50,9 +56,40 @@ final class ContentViewModel: ObservableObject {
         Task {
             await fetchRecommendation(
                 lat: loc.coordinate.latitude,
-                lon: loc.coordinate.longitude
+                lon: loc.coordinate.longitude,
+                weatherOverride: isManualMode ? currentOverride : nil
             )
         }
+    }
+
+    func openOverrideSheet() {
+        if let r = result {
+            currentOverride = WeatherOverride(
+                airTemp: r.weather.airTemp,
+                windSpeed: r.weather.windSpeed,
+                humidity: r.weather.humidity,
+                precipitation: r.weather.precipitation,
+                precipitationProb: r.weather.precipitationProb
+            )
+        }
+        showOverrideSheet = true
+    }
+
+    func applyOverride() async {
+        isManualMode = true
+        guard let loc = locationService.location else { return }
+        await fetchRecommendation(
+            lat: loc.coordinate.latitude,
+            lon: loc.coordinate.longitude,
+            weatherOverride: currentOverride
+        )
+    }
+
+    func resetToGeoWeather() async {
+        isManualMode = false
+        showOverrideSheet = false
+        guard let loc = locationService.location else { return }
+        await fetchRecommendation(lat: loc.coordinate.latitude, lon: loc.coordinate.longitude)
     }
 }
 
@@ -78,8 +115,19 @@ struct ContentView: View {
                     } else if let error = vm.errorMessage {
                         ErrorView(message: error) { vm.activityChanged() }
                     } else if let result = vm.result {
-                        WeatherHeaderView(result: result, locationName: locationService.locationName)
-                            .transition(.opacity.combined(with: .scale(scale: 0.97)))
+                        WeatherHeaderView(
+                            result: result,
+                            locationName: locationService.locationName,
+                            isManualMode: vm.isManualMode,
+                            onToggleManual: {
+                                if vm.isManualMode {
+                                    Task { await vm.resetToGeoWeather() }
+                                } else {
+                                    vm.openOverrideSheet()
+                                }
+                            }
+                        )
+                        .transition(.opacity.combined(with: .scale(scale: 0.97)))
                         if !result.safetyWarnings.isEmpty {
                             SafetyWarningsView(warnings: result.safetyWarnings)
                                 .transition(.opacity)
@@ -96,6 +144,13 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.large)
         }
         .onAppear { vm.onAppear() }
+        .sheet(isPresented: $vm.showOverrideSheet) {
+            WeatherOverrideSheet(
+                override: $vm.currentOverride,
+                onApply: { Task { await vm.applyOverride() } },
+                onReset: { Task { await vm.resetToGeoWeather() } }
+            )
+        }
     }
 }
 
