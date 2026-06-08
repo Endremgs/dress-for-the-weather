@@ -35,7 +35,13 @@ struct WatchContentView: View {
     var body: some View {
         Group {
             if vm.isLoading {
-                ProgressView()
+                VStack(spacing: 8) {
+                    ProgressView()
+                        .controlSize(.regular)
+                    Text("Beregner...")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             } else if let result = vm.result {
                 WatchRecommendationView(
                     result: result,
@@ -44,11 +50,19 @@ struct WatchContentView: View {
                 )
             } else if let error = vm.errorMessage {
                 VStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text(error).font(.caption2).multilineTextAlignment(.center)
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                        .font(.title3)
+                    Text(error)
+                        .font(.caption2)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
                     Button("Prøv igjen") { Task { await vm.fetch() } }
-                        .font(.caption)
+                        .font(.caption.weight(.medium))
+                        .buttonStyle(.borderedProminent)
+                        .tint(.blue)
                 }
+                .padding()
             } else {
                 WatchActivityPickerView(
                     selectedActivity: $vm.selectedActivity,

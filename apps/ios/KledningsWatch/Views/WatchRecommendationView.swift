@@ -9,12 +9,14 @@ struct WatchRecommendationView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 // Header
-                HStack {
-                    Text(activity.icon).font(.title3)
+                HStack(alignment: .center) {
+                    Image(systemName: activity.sfSymbol)
+                        .font(.title3)
+                        .foregroundStyle(.blue)
                     VStack(alignment: .leading, spacing: 1) {
                         Text("\(result.weather.airTemp, specifier: "%.0f")°C")
                             .font(.headline)
-                        Text("Føles \(result.effectiveTemp, specifier: "%.0f")°")
+                        Text("Eff. \(result.effectiveTemp, specifier: "%.0f")°")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -22,17 +24,26 @@ struct WatchRecommendationView: View {
                     Button(action: onChangeTap) {
                         Image(systemName: "arrow.triangle.2.circlepath")
                             .font(.caption)
+                            .foregroundStyle(.blue)
                     }
                     .buttonStyle(.plain)
-                    .foregroundStyle(.blue)
                 }
+                .padding(.bottom, 2)
 
                 // Safety warnings
                 ForEach(result.safetyWarnings.prefix(2)) { warning in
-                    Label(warning.message, systemImage: warning.level.icon)
-                        .font(.caption2)
-                        .foregroundStyle(warning.level == .critical ? .red : .orange)
-                        .lineLimit(2)
+                    HStack(spacing: 4) {
+                        Image(systemName: warning.level.icon)
+                            .font(.caption2)
+                        Text(warning.message)
+                            .font(.caption2)
+                            .lineLimit(2)
+                    }
+                    .foregroundStyle(warningColor(warning.level))
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(warningColor(warning.level).opacity(0.15), in: RoundedRectangle(cornerRadius: 8))
                 }
 
                 Divider()
@@ -40,35 +51,53 @@ struct WatchRecommendationView: View {
                 // Summary
                 Text(result.summary)
                     .font(.caption.weight(.semibold))
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Divider()
 
                 // Layers
-                WatchLayerRow(label: "Hode", item: result.garments.head.item, required: result.garments.head.required)
-                WatchLayerRow(label: "Overkropp", item: result.garments.upperBody.baseLayer.item, required: true)
-                if let mid = result.garments.upperBody.midLayer {
-                    WatchLayerRow(label: "+", item: mid.item, required: mid.required)
+                VStack(alignment: .leading, spacing: 6) {
+                    WatchLayerRow(label: "Hode", item: result.garments.head.item, required: result.garments.head.required)
+                    WatchLayerRow(label: "Base", item: result.garments.upperBody.baseLayer.item, required: true)
+                    if let mid = result.garments.upperBody.midLayer {
+                        WatchLayerRow(label: "Mellom", item: mid.item, required: mid.required)
+                    }
+                    if let outer = result.garments.upperBody.outerLayer {
+                        WatchLayerRow(label: "Ytter", item: outer.item, required: outer.required)
+                    }
+                    WatchLayerRow(label: "Bein", item: result.garments.lowerBody.outerLayer.item, required: true)
+                    WatchLayerRow(label: "Hender", item: result.garments.hands.item, required: result.garments.hands.required)
                 }
-                if let outer = result.garments.upperBody.outerLayer {
-                    WatchLayerRow(label: "+", item: outer.item, required: outer.required)
-                }
-                WatchLayerRow(label: "Bein", item: result.garments.lowerBody.outerLayer.item, required: true)
-                WatchLayerRow(label: "Hender", item: result.garments.hands.item, required: result.garments.hands.required)
 
                 // Backpack extras
                 if !result.garments.backpackExtras.isEmpty {
                     Divider()
-                    Text("Sekken:")
+                    Text("Sekken")
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(.secondary)
                     ForEach(result.garments.backpackExtras.prefix(2), id: \.self) { extra in
-                        Text("• \(extra)")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.green)
+                            Text(extra)
+                                .font(.caption2)
+                                .lineLimit(2)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
             .padding()
+        }
+    }
+
+    private func warningColor(_ level: WarningLevel) -> Color {
+        switch level {
+        case .critical: return .red
+        case .high:     return .orange
+        case .medium:   return .yellow
+        case .low:      return .blue
         }
     }
 }
@@ -81,13 +110,13 @@ struct WatchLayerRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 6) {
             Text(label)
-                .font(.caption2)
+                .font(.caption2.weight(.medium))
                 .foregroundStyle(.secondary)
-                .frame(width: 44, alignment: .leading)
+                .frame(width: 46, alignment: .leading)
             Text(item)
                 .font(.caption2)
                 .lineLimit(2)
-                .opacity(required ? 1 : 0.5)
+                .foregroundStyle(required ? .primary : .secondary)
         }
     }
 }
