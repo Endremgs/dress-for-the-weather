@@ -153,6 +153,7 @@ struct BodyZoneRecommendations: Codable {
     let hands: ZoneRecommendation
     let feet: LayerRecommendation
     let backpackExtras: [String]
+    let mandatoryGear: [String]
 }
 
 enum ForecastAlertType: String, Codable {

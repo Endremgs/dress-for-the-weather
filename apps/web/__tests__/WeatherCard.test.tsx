@@ -29,6 +29,7 @@ const mockResult: RecommendationResult = {
     hands: { item: 'Tynne hansker', required: true, clo: 0.1 },
     feet: { item: 'Ullsokker', required: true, clo: 0.1 },
     backpackExtras: [],
+    mandatoryGear: [],
   },
   notes: [],
   summary: 'Kjølig dag — kle deg i lag',
