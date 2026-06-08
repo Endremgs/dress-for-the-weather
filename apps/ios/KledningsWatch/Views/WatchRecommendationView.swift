@@ -3,30 +3,82 @@ import SwiftUI
 struct WatchRecommendationView: View {
     let result: RecommendationResult
     let activity: ActivityType
+    let locationName: String
     let onChangeTap: () -> Void
+
+    private var precipitationText: String {
+        let prob = Int(result.weather.precipitationProb)
+        switch result.weather.precipitation {
+        case "none":     return prob < 10 ? "Tørt" : "\(prob)%"
+        case "light":    return "Lett \(prob)%"
+        case "moderate": return "Mod. \(prob)%"
+        default:         return "Kraftig"
+        }
+    }
+
+    private var precipitationIcon: String {
+        switch result.weather.precipitation {
+        case "none":     return "drop"
+        case "light":    return "cloud.drizzle.fill"
+        case "moderate": return "cloud.rain.fill"
+        default:         return "cloud.heavyrain.fill"
+        }
+    }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 // Header
-                HStack(alignment: .center) {
-                    Image(systemName: activity.sfSymbol)
-                        .font(.title3)
-                        .foregroundStyle(.blue)
-                    VStack(alignment: .leading, spacing: 1) {
+                VStack(alignment: .leading, spacing: 4) {
+                    // Location row
+                    HStack(spacing: 4) {
+                        Image(systemName: "location.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(locationName)
+                            .font(.caption2.weight(.medium))
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button(action: onChangeTap) {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .font(.caption)
+                                .foregroundStyle(.blue)
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    // Activity + temperature + wind
+                    HStack(alignment: .center, spacing: 6) {
+                        Image(systemName: activity.sfSymbol)
+                            .font(.title3)
+                            .foregroundStyle(.blue)
                         Text("\(result.weather.airTemp, specifier: "%.0f")°C")
                             .font(.headline)
+                        Spacer()
+                        HStack(spacing: 2) {
+                            Image(systemName: "wind")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            Text("\(result.weather.windSpeed, specifier: "%.1f") m/s")
+                                .font(.caption2)
+                        }
+                    }
+
+                    // Effective temp + precipitation
+                    HStack {
                         Text("Eff. \(result.effectiveTemp, specifier: "%.0f")°")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
+                        Spacer()
+                        HStack(spacing: 2) {
+                            Image(systemName: precipitationIcon)
+                                .font(.caption2)
+                                .foregroundStyle(.blue.opacity(0.8))
+                            Text(precipitationText)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
                     }
-                    Spacer()
-                    Button(action: onChangeTap) {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                            .font(.caption)
-                            .foregroundStyle(.blue)
-                    }
-                    .buttonStyle(.plain)
                 }
                 .padding(.bottom, 2)
 

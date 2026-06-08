@@ -11,6 +11,7 @@ final class WatchViewModel: ObservableObject {
     // Oslo as default — watch has no location API in independent mode
     private let lat = 59.9139
     private let lon = 10.7522
+    let locationName = "Oslo"
 
     func fetch() async {
         isLoading = true
@@ -46,6 +47,7 @@ struct WatchContentView: View {
                 WatchRecommendationView(
                     result: result,
                     activity: vm.selectedActivity,
+                    locationName: vm.locationName,
                     onChangeTap: { showPicker = true }
                 )
             } else if let error = vm.errorMessage {
