@@ -1,4 +1,4 @@
-import type { RecommendationResult, LayerRecommendation, ZoneRecommendation } from '@kledningsapp/recommendation-engine';
+import type { RecommendationResult, LayerRecommendation, ZoneRecommendation, ForecastAlert } from '@kledningsapp/recommendation-engine';
 
 function LayerItem({ layer, label }: { layer: LayerRecommendation | ZoneRecommendation | null; label: string }) {
   if (!layer) return null;
@@ -35,14 +35,45 @@ function Section({ title, icon, children }: { title: string; icon: string; child
   );
 }
 
+const ALERT_STYLES: Record<ForecastAlert['type'], { bg: string; border: string; text: string; icon: string }> = {
+  regn:          { bg: 'bg-blue-50 dark:bg-blue-950',   border: 'border-blue-200 dark:border-blue-800',   text: 'text-blue-800 dark:text-blue-200',   icon: '🌧️' },
+  temperaturfall: { bg: 'bg-orange-50 dark:bg-orange-950', border: 'border-orange-200 dark:border-orange-800', text: 'text-orange-800 dark:text-orange-200', icon: '🌡️' },
+  vindøkning:    { bg: 'bg-slate-50 dark:bg-slate-800',  border: 'border-slate-200 dark:border-slate-700',  text: 'text-slate-700 dark:text-slate-300',  icon: '💨' },
+};
+
 export function OutfitDisplay({ result }: { result: RecommendationResult }) {
-  const { garments, notes, summary } = result;
+  const { garments, notes, summary, forecastAlerts } = result;
 
   return (
     <div className="space-y-4">
       <div className="rounded-xl bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 px-4 py-3">
         <p className="font-semibold text-blue-900 dark:text-blue-100">{summary}</p>
       </div>
+
+      {forecastAlerts.length > 0 && (
+        <div className="rounded-xl border border-amber-200 dark:border-amber-800 overflow-hidden">
+          <div className="px-4 py-3 bg-amber-50 dark:bg-amber-900/40 border-b border-amber-200 dark:border-amber-800 flex items-center gap-2">
+            <span>⚠️</span>
+            <h3 className="font-semibold text-amber-800 dark:text-amber-200 text-sm">Varsler for turen</h3>
+          </div>
+          <div className="px-4 py-2 space-y-2 bg-white dark:bg-slate-800">
+            {forecastAlerts.map((alert, i) => {
+              const s = ALERT_STYLES[alert.type];
+              return (
+                <div key={i} className={`flex items-start gap-2 rounded-lg px-3 py-2 border ${s.bg} ${s.border}`}>
+                  <span className="text-base leading-none mt-0.5">{s.icon}</span>
+                  <div>
+                    <p className={`text-sm font-medium ${s.text}`}>{alert.message}</p>
+                    {alert.severity === 'advarsel' && (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Ta med ekstra lag</p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <Section title="Hode og hals" icon="🧢">
         <LayerItem layer={garments.head} label="Hode" />

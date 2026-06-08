@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Input types
 
@@ -56,6 +57,11 @@ struct UserInput: Codable {
 
 // MARK: - Output types
 
+struct WeatherLocation: Codable {
+    let lat: Double
+    let lon: Double
+}
+
 struct WeatherData: Codable {
     let airTemp: Double
     let windSpeed: Double
@@ -63,6 +69,7 @@ struct WeatherData: Codable {
     let precipitation: String
     let precipitationProb: Double
     let cloudCover: Double
+    let location: WeatherLocation
 }
 
 enum WarningLevel: String, Codable {
@@ -83,6 +90,15 @@ enum WarningLevel: String, Codable {
         case .medium:   return "exclamationmark.triangle"
         case .high:     return "exclamationmark.triangle.fill"
         case .critical: return "xmark.octagon.fill"
+        }
+    }
+
+    var swiftUIColor: Color {
+        switch self {
+        case .low:      return .blue
+        case .medium:   return .yellow
+        case .high:     return .orange
+        case .critical: return .red
         }
     }
 }
@@ -128,6 +144,28 @@ struct BodyZoneRecommendations: Codable {
     let backpackExtras: [String]
 }
 
+enum ForecastAlertType: String, Codable {
+    case regn
+    case temperaturfall
+    case vindøkning = "vindøkning"
+
+    var icon: String {
+        switch self {
+        case .regn:           return "cloud.rain.fill"
+        case .temperaturfall: return "thermometer.snowflake"
+        case .vindøkning:     return "wind"
+        }
+    }
+}
+
+struct ForecastAlert: Codable, Identifiable {
+    var id: String { "\(type.rawValue)-\(startsInMinutes)" }
+    let type: ForecastAlertType
+    let message: String
+    let startsInMinutes: Int
+    let severity: String
+}
+
 struct RecommendationResult: Codable {
     let weather: WeatherData
     let apparentTemp: Double
@@ -137,6 +175,7 @@ struct RecommendationResult: Codable {
     let notes: [String]
     let safetyWarnings: [SafetyWarning]
     let summary: String
+    let forecastAlerts: [ForecastAlert]
 }
 
 // MARK: - API request

@@ -132,85 +132,111 @@ function getTargetClo(effectiveTemp: number): number {
 
 ## Plagganbefalings-logikk
 
-### Kropp­sone-grenseverdier
+### Output-struktur
 
 ```typescript
-interface ZoneRecommendation {
-  required: boolean;
-  item: string;
-  reason?: string;
+interface BodyZoneRecommendations {
+  head: ZoneRecommendation;
+  neck: ZoneRecommendation;
+  upperBody: {
+    baseLayer: LayerRecommendation;
+    midLayer: LayerRecommendation | null;
+    outerLayer: LayerRecommendation | null;
+  };
+  lowerBody: {
+    baseLayer: LayerRecommendation | null;
+    outerLayer: LayerRecommendation;
+  };
+  hands: ZoneRecommendation;
+  feet: LayerRecommendation;
+  backpackExtras: string[];
+  /** Sikkerhetsutstyr og aktivitetsspesifikt utstyr (hjelm, goggles, sele etc.) */
+  mandatoryGear: string[];
 }
+```
 
-function getHeadRecommendation(effectiveTemp: number): ZoneRecommendation {
+### Obligatorisk sikkerhetsutstyr per aktivitet
+
+```typescript
+function getMandatoryGear(activity: ActivityType): string[] {
+  switch (activity) {
+    case 'sykling':
+      return ['Sykkelhjelm (EN 1078) — sterkt anbefalt, lovpålagt under 15 år', 'Sykkelbriller / solbriller'];
+    case 'alpint':
+      return ['Skihjelm (EN 1077) — sterkt anbefalt', 'Skibriller / goggles (EN 174)'];
+    case 'klatring':
+      return ['Klatrehjelm (EN 12492) — sterkt anbefalt utendørs', 'Klatresele (EN 12277)', 'Klatresko'];
+    default:
+      return [];
+  }
+}
+```
+
+### Kropp­sone-grenseverdier — aktivitetsspesifikk logikk
+
+Hode-anbefalingen er nå aktivitetssensitiv:
+
+```typescript
+function getHeadRecommendation(effectiveTemp: number, activity: ActivityType): ZoneRecommendation {
+  // Alpint: hjelm + goggles alltid, pluss temperaturavhengig hodeplag
+  if (activity === 'alpint') {
+    if (effectiveTemp < -10) return { required: true, item: 'Skihjelm + goggles + balaklava under' };
+    if (effectiveTemp < 0)  return { required: true, item: 'Skihjelm + goggles + lue under' };
+    return { required: true, item: 'Skihjelm + goggles' };
+  }
+
+  // Sykling: hjelm alltid, hjelmlue/balaklava ved kulde
+  if (activity === 'sykling') {
+    if (effectiveTemp < -5) return { required: true, item: 'Sykkelhjelm + balaklava under hjelm' };
+    if (effectiveTemp < 0)  return { required: true, item: 'Sykkelhjelm + tykk hjelmlue' };
+    if (effectiveTemp < 7)  return { required: true, item: 'Sykkelhjelm + lue under hjelm' };
+    if (effectiveTemp < 13) return { required: true, item: 'Sykkelhjelm + lett hjelmlue (valgfri)' };
+    return { required: true, item: 'Sykkelhjelm' };
+  }
+
+  // Generisk
   if (effectiveTemp < -10) return { required: true, item: 'Balaklava', reason: 'Frost­bite-risiko' };
   if (effectiveTemp < 0)  return { required: true, item: 'Tykk ullmøss' };
   if (effectiveTemp < 5)  return { required: true, item: 'Ullmøss' };
   if (effectiveTemp < 10) return { required: false, item: 'Lett lue/caps' };
   return { required: false, item: 'Valgfri caps' };
 }
+```
 
-function getGloveRecommendation(effectiveTemp: number, windSpeed: number): ZoneRecommendation {
-  const windKmh = windSpeed * 3.6;
-  if (effectiveTemp < -15) return { required: true, item: 'Tykke votter + liner' };
-  if (effectiveTemp < -5)  return { required: true, item: 'Isolerte hansker' };
-  if (effectiveTemp < 0)   return { required: true, item: 'Medium hansker' };
-  if (effectiveTemp < 5 || windKmh > 30) return { required: true, item: 'Lette hansker' };
-  if (effectiveTemp < 10)  return { required: false, item: 'Lette hansker (anbefalt)' };
-  return { required: false, item: 'Ikke nødvendig' };
-}
+### Aktivitetsspesifikke plagg — nedre kropp
 
-function getNeckRecommendation(effectiveTemp: number): ZoneRecommendation {
-  if (effectiveTemp < 0)  return { required: true, item: 'Hals­verner / buff / skjerf' };
-  if (effectiveTemp < 5)  return { required: false, item: 'Buff (anbefalt)' };
-  return { required: false, item: 'Valgfri' };
+Nedre kropp bruker aktivitetsspesifikke termer:
+
+| Aktivitet | > 16°C | 7–16°C | 0–7°C | < 0°C |
+|---|---|---|---|---|
+| Sykling | Sykkelshorts (bib) | Sykkelshorts + knevarmere / 3/4 tights | Termiske sykkel-tights | Termiske tights (fleece-foret) |
+| Løping | Løpeshorts | Løpeshorts / 3/4 tights | Løpe-tights | Termiske løpe-tights |
+| Alpint | — | Salopetter/skibukse | Salopetter (isolert) | Isolerte salopetter |
+| Generisk | Shorts | Lett friluftsbukse | Softshell-bukse | Vinterbukse |
+
+### Sykling — jakke-sekvens (erstatter generisk ytterlag)
+
+```typescript
+// Sykkel outer layer — aktivitetsspesifikk jakke-sekvens
+if (activity === 'sykling') {
+  if (heavyWet || wet)        → 'Sykkeljakke regn (vanntett)'          // CLO 0.18
+  if (effectiveTemp < -5)     → 'Sykkeljakke vinter (termisk, isolert)' // CLO 0.47
+  if (effectiveTemp < 4)      → 'Sykkeljakke softshell'                 // CLO 0.35
+  if (effectiveTemp < 10)     → 'Sykkeljakke vindtett (packable)'       // CLO 0.22
+  if (effectiveTemp < 16)     → 'Sykkelvest/gilet (anbefalt)'           // CLO 0.15
 }
 ```
 
-### Aktivitets­spesifikke justeringer
+### Sykling — føtter (skoovertrekk-sekvens)
 
 ```typescript
-function applyActivityOverrides(
-  base: GarmentSet,
-  activity: ActivityType,
-  effectiveTemp: number,
-  precipitation: string
-): GarmentSet {
-  const result = { ...base };
-
-  // Løping: alltid fukt-transporterende materialer
-  if (activity === 'løping') {
-    result.baseLayer.material = 'syntetisk eller merino';
-    result.notes.push('Unngå bomull — risiko for hypotermi etter stopp');
-    if (effectiveTemp > 10) {
-      result.midLayer = null; // Ikke behov
-    }
-  }
-
-  // Sykling: vindeksponering kritisk
-  if (activity === 'sykling') {
-    result.notes.push('Kne-varmere ved < 15°C');
-    if (effectiveTemp < 10) {
-      result.notes.push('Skoovertrekk anbefalt');
-    }
-    if (precipitation !== 'none') {
-      result.outerLayer = { item: 'Isolert regnjakke', required: true };
-    }
-  }
-
-  // Fjelltur: alltid ekstra i sekken
-  if (activity === 'fjelltur') {
-    result.backpackExtras = getHikingBackpackLayer(effectiveTemp);
-    result.notes.push('Pakk alltid ekstra lag — fjellet skifter raskt');
-    result.notes.push('Alltid regntøy i sekken i Norge');
-  }
-
-  // Langrenn: vind fremover i glid-fase
-  if (activity === 'langrenn') {
-    result.notes.push('Kle deg som om det er 15°C varmere — høy varme­produksjon');
-    result.outerLayer = { item: 'Vindtett langrenn-trøye/-jakke', required: effectiveTemp < 0 };
-  }
-
-  return result;
+// Sykkel feet — skoovertrekk etter temperatur
+if (activity === 'sykling') {
+  if (effectiveTemp < 0)  → 'Sykkelsko + isolerte vinter-skoovertrekk'  // CLO 0.17
+  if (effectiveTemp < 4)  → 'Sykkelsko + isolerte skoovertrekk'         // CLO 0.14
+  if (effectiveTemp < 12) → 'Sykkelsko + neopren skoovertrekk (full)'   // CLO 0.12
+  if (effectiveTemp < 18) → 'Sykkelsko + tå-overtrekk (valgfri)'        // CLO 0.05
+  else                    → 'Sykkelsko'                                  // CLO 0.02
 }
 ```
 

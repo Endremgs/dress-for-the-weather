@@ -9,6 +9,7 @@ const baseResult: RecommendationResult = {
     humidity: 65,
     precipitation: 'none',
     precipitationProb: 10,
+    forecastWindow: [],
   },
   apparentTemp: 3.0,
   effectiveTemp: 1.0,
@@ -32,6 +33,7 @@ const baseResult: RecommendationResult = {
   notes: ['Ta med vann', 'Solfaktor anbefales'],
   summary: 'Kjølig dag — kle deg i lag',
   safetyWarnings: [],
+  forecastAlerts: [],
 };
 
 describe('OutfitDisplay', () => {

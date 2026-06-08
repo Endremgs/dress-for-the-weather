@@ -1,0 +1,62 @@
+---
+name: cross-platform-rule
+description: Regler og sjekkliste for å holde iOS, Watch og Web-appen i sync ved alle endringer. Prosjektets viktigste regel.
+tags: [process, cross-platform, ios, watch, web, checklist]
+status: production-ready
+priority: critical
+---
+
+# Cross-Platform Regel
+
+## Kjerneregelen
+
+**All funksjonalitet som legges til én plattform, skal implementeres på alle tre i samme arbeidsøkt og samme PR.**
+
+De tre plattformene:
+| Plattform | Sti | Teknologi |
+|-----------|-----|-----------|
+| Web | `apps/web/` | Next.js / TypeScript / React |
+| iOS | `apps/ios/KledningsApp/` | Swift / SwiftUI |
+| Watch | `apps/ios/KledningsWatch/` | SwiftUI (begrensninger finnes) |
+
+## Sjekkliste for ny funksjonalitet
+
+Gå gjennom denne for hver PR som endrer UI eller logikk:
+
+- [ ] **Web** — er funksjonen implementert i `apps/web/`?
+- [ ] **iOS** — er funksjonen implementert i `apps/ios/KledningsApp/`?
+- [ ] **Watch** — er funksjonen implementert i `apps/ios/KledningsWatch/`, eller er Watch-begrensning dokumentert?
+- [ ] Delt logikk ligger i `packages/recommendation-engine/` (ikke duplisert per plattform)
+- [ ] Tester oppdatert for alle berørte plattformer
+
+## Watch-begrensninger (godkjente unntak)
+
+Watch har ekte tekniske begrensninger som rettferdiggjør avvik:
+- Ingen bakgrunns-API-kall (begrensede bakgrunnsressurser)
+- Liten skjerm — komplekse layouts forenkles, ikke direkte portert
+- Ingen lokal lagring ut over ~250 KB
+- Avhenger av iPhone-appen for data via WatchConnectivity
+
+Når Watch-begrensning brukes som unntak: **dokumentér det eksplisitt i PR-beskrivelsen**.
+
+## Delt logikk
+
+Domenelogikk som er lik på tvers av plattformer skal ligge i:
+- `packages/recommendation-engine/` — TypeScript-algoritme (brukes av web)
+- iOS: Swift-port av algoritmen i `KledningsApp/` deles med Watch via shared framework
+
+Aldri dupliser algoritmelogikk mellom plattformene — ett sett med regler, tre presentasjonslag.
+
+## Vanligste feil
+
+1. **Glemmer Watch** — Watch-appen er liten og lett å glemme. Den skal alltid vurderes.
+2. **Dupliserer algoritme** — CLO-beregning i én plattform → skal ut i `packages/`.
+3. **UI-spesifikk anta** — en knapp som fungerer på iOS er kanskje ikke riktig størrelse på Watch.
+
+## Trigger-fraser
+
+Bruk denne skillen når:
+- "Skal jeg legge til [funksjon]?"
+- "Er dette implementert på alle plattformer?"
+- "Hva mangler på Watch?"
+- "Er dette i sync?"

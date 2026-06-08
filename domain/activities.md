@@ -47,6 +47,8 @@ Kledningsprioritering: Isolasjon > pustbarhet > sportslig passform
 ### Løping
 **MET**: 6–12 | **Offset**: +5–10°C
 
+**Anbefalt utstyr**: Refleksvest/-bånd ved lav sikt/mørke. Løpesko med riktig underlag (asfalt vs. terreng).
+
 Særtrekk:
 - Høy svetteproduksjon — **aldri bomull**, alltid fukt-transporterende
 - Overoppheting-risiko selv ved lave temperaturer (se 10°C-regelen)
@@ -57,18 +59,21 @@ Særtrekk:
 (Justeres til ca. +7°C for moderat tempo, +10°C for høy intensitet)
 
 Grenseverdier:
-| Lufttemp | Anbefaling |
-|---|---|
-| > 20°C | Shorts + t-skjorte (lett syntetisk) |
-| 15–20°C | Shorts + langermet |
-| 10–15°C | Shorts/tights + langermet + lett jakke |
-| 5–10°C | Tights + termolange­erm + lett løpejakke |
-| 0–5°C | Tights + termo-base + mellomlag + vindjakke + hansker + lue |
-| −5 til 0°C | Tykke tights + tung termo + midtre lag + vindtett + isolerte hansker |
-| < −5°C | Vurder interiørtrening eller sterkt redusert eksponering |
+
+| Lufttemp | Bein | Overkropp | Hender / Hode |
+|---|---|---|---|
+| > 20°C | Løpeshorts | Singlet / kortarm t-skjorte (syntetisk) | — |
+| 15–20°C | Løpeshorts | Kortarm løpet-skjorte | — |
+| 10–15°C | Løpeshorts / 3/4-tights | Langermet løpeskjorte | Pannebånd (valgfri) |
+| 5–10°C | Løpe-tights | Langermet løpeskjorte + lett løpejakke | Lette løpehansker; pannebånd |
+| 0–5°C | Løpe-tights | Termo-base + langermet + løpejakke | Lett lue + løpehansker |
+| −5–0°C | Termiske løpe-tights | Termo-base + fleece-mellomlag + vindtett jakke | Ullmøss + mellom-hansker |
+| < −5°C | Tykke tights + vind-overlag | Tung termo + mellomlag + vindtett | Ullmøss + isolerte hansker — vurder innendørs |
 
 ### Sykling
 **MET**: 6–12 | **Offset**: +5–9°C
+
+**Obligatorisk sikkerhetsutstyr**: Hjelm (EN 1078) — alltid anbefalt; lovpålagt under 15 år. Sykkelbriller / solbriller anbefalt.
 
 Særtrekk:
 - Sterk vindfaktor — sykler inn i vinden (effektiv vindavkjøling 2–3× normalt)
@@ -76,20 +81,24 @@ Særtrekk:
 - Regneklær kritisk — fuktig kald = hypotermi-risiko
 - Aerodynamisk passform viktig
 
-Grenseverdier:
-| Lufttemp | Anbefaling |
-|---|---|
-| > 20°C | Sykkelshorts + trøye |
-| 15–20°C | Sykkelshorts + langermet |
-| 10–15°C | Lange sykkelshorts/tights + langermet + lett jakke |
-| 5–10°C | Tights + termo-base + vindjakke + lette hansker + valgfri lue |
-| 0–5°C | Tights + termo + isolert sykkeljakke + hansker + lue |
-| < 0°C | Vintertights + tung termo + isolert jakke + votter + balaklava |
+Grenseverdier (aktivitetsspesifikke plagg):
+
+| Lufttemp | Bein | Overkropp | Hender | Hode / Tilbehør |
+|---|---|---|---|---|
+| > 21°C | Sykkelshorts (bib shorts) | Kortarm sykkeltrøye | Fingerfrie hansker (valgfri) | Hjelm |
+| 16–21°C | Sykkelshorts (bib shorts) | Kortarm sykkeltrøye | Fingerfrie hansker | Hjelm |
+| 12–16°C | Sykkelshorts + knevarmere / 3/4 tights | Kortarm + armmere / langermet trøye | Lette full-finger sykkelhansker | Hjelm; tå-overtrekk valgfri |
+| 7–12°C | 3/4 tights / sykkelshorts + benvarmere | Langermet termisk trøye + sykkelvest | Lette sykkelhansker (softshell) | Hjelm + lett lue; neopren skoovertrekk |
+| 4–7°C | Termiske sykkel-tights | Termo-base + termisk trøye + sykkeljakke | Mellom sykkelhansker | Hjelm + lue; full neopren skoovertrekk |
+| 0–4°C | Termiske sykkel-tights | Termo-base + termisk trøye + isolert sykkeljakke | Tykke vinter-sykkelhansker | Hjelm + tykk lue; isolerte skoovertrekk |
+| −5–0°C | Termiske tights | Tung termo + termisk trøye + vinterjakke | Tykke hansker / hummer-hansker | Hjelm + balaklava; vinter-skoovertrekk |
+| < −5°C | Termiske tights + vindoverlag | Dobbel-base + isolert vinterjakke | Sykkelvotter | Hjelm + balaklava; isolerte vinter-booties |
 
 **Ekstraspesifikt for sykling**:
-- Kne-varmere ved 10–15°C (knær tåler dårlig kulde under dynamisk bevegelse)
-- Skoovertrekk/varmere ved < 10°C
+- Kne-varmere ved 10–16°C — knær tåler dårlig kulde under dynamisk bevegelse
+- Skoovertrekk/varmere ved < 12°C
 - Regnjakke alltid ved > 40% nedbørssannsynlighet
+- Refleks/lys lovpålagt i mørke
 
 ### Fjelltur / Hiking
 **MET**: 4–7 | **Offset**: +4–6°C
@@ -122,21 +131,23 @@ Særtrekk:
 - Høyest varme-produksjon av vanlige utendørs­aktiviteter
 - Forfra eksponert mot vind i glid-faser
 - Stillstand­kulde etter trening (avkjøling dramatisk)
-- Kompetanse-klistvoks-lignende presisjons-kriterier for klær
 
-Kledningsregel: Kle deg som om det er 15°C varmere enn termometeret
+Kledningsregel: Kle deg som om det er 15°C varmere enn termometeret. Vær kald ved start — kroppen er oppe i temp innen 5–10 min.
 
 Grenseverdier:
-| Lufttemp | Anbefaling |
-|---|---|
-| > 5°C | Shorts eller løse bukser + typisk-løp-trøye |
-| 0–5°C | Tynne tights + tynn vindjakke |
-| −5 til 0°C | Medium tights + vindtett langrenn-trøye |
-| −10 til −5°C | Tykke tights + vindtett melomlag + lue + hansker |
-| < −10°C | Full vinter-langrenn-sett + balaklava + votter |
+
+| Lufttemp | Bein | Overkropp | Hender / Hode |
+|---|---|---|---|
+| > 5°C | Shorts / løse bukser | Løpet-skjorte / tynn langrennstrøye | Ingen / pannebånd |
+| 0–5°C | Langrennsdress / tynne tights | Langrennsdress / vindtett trøye | Tynne hansker |
+| −5–0°C | Langrenn-tights (medium) | Vindtett langrenn-trøye | Lett lue + mellom-hansker |
+| −10–−5°C | Tykke langrenn-tights | Termo-base + vindtett mellomlag | Ullmøss + mellom-hansker / votter |
+| < −10°C | Tykke tights + vindoverlag | Tung termo + fleece + softshell | Balaklava + votter |
 
 ### Alpint / Snowboard
 **MET**: 5–9 | **Offset**: +4–6°C
+
+**Obligatorisk sikkerhetsutstyr**: Skihjelm (EN 1077) — sterkt anbefalt (~85% av norske skiløpere). Skibriller/goggles (EN 174) — sterkt anbefalt (UV, vind, snø-impact).
 
 Særtrekk:
 - Pauser på heis → kjøles ned
@@ -146,14 +157,26 @@ Særtrekk:
 
 Kledningsregel: Fullt 3-lags-system ved < 0°C
 
+Grenseverdier:
+
+| Lufttemp | Bein | Overkropp | Hender / Hode |
+|---|---|---|---|
+| > 5°C | Salopetter (shell) / skibukse | Lett termo-base + lett skijakke | Ski-hansker; hjelm + goggles |
+| 0–5°C | Salopetter (lett isolert) | Termisk base (merino) + skijakke | Ski-hansker; hjelm + goggles; buff |
+| −5–0°C | Salopetter (isolert) | Tung termo-base + fleece + skijakke | Ski-hansker med liner; hjelm + goggles; buff |
+| −10–−5°C | Isolerte salopetter | Tung termo + fleece + tung skijakke | Liner + varmfôrede hansker; hjelm + goggles; balaklava |
+| < −10°C | Isolerte salopetter + ekstra lag | Dobbel-base + fleece + tung skijakke | Liner + ski-votter; hjelm + goggles; balaklava |
+
 ### Klatring
 **MET**: 5–9 | **Offset**: +4–6°C
 
+**Obligatorisk sikkerhetsutstyr (utendørs)**: Klatrehjelm (EN 12492) — sterkt anbefalt; obligatorisk for via ferrata og guidede turer. Klatresele (EN 12277). Klatresko.
+
 Særtrekk:
 - Stor variasjon: aktive perioder + passiv belaying (stå stille)
-- Høy kravet til arm-bevegelighet
+- Høy kravet til arm-bevegelighet — unngå trange mellomlag
 - Klippe-kontakt → handholding i kulde
-- Innendørs vs. klippe­klatring = dramatisk forskjell
+- Innendørs vs. klippeklatring = dramatisk forskjell
 
 ### Åpen-vann svømming
 **Spesielt**: Fokus på vann­temperatur, ikke lufttemp

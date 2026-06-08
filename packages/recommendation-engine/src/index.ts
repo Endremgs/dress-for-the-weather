@@ -2,8 +2,10 @@ import { fetchWeather } from './weather.js';
 import { calcApparentTemp, calcActivityOffset, calcEffectiveTemp, getTargetClo } from './algorithm.js';
 import { buildRecommendations } from './recommendations.js';
 import { generateSafetyWarnings } from './safety.js';
+import { analyzeForecastWindow } from './forecast.js';
 import type {
   ActivityInput,
+  BodyZoneRecommendations,
   Location,
   RecommendationResult,
   UserInput,
@@ -15,13 +17,14 @@ export { fetchWeather } from './weather.js';
 export { MET_VALUES, calcApparentTemp, calcActivityOffset, calcEffectiveTemp, getTargetClo } from './algorithm.js';
 export { buildRecommendations } from './recommendations.js';
 export { generateSafetyWarnings } from './safety.js';
+export { analyzeForecastWindow } from './forecast.js';
 
 export async function getRecommendation(
   location: Location,
   activity: ActivityInput,
   user?: UserInput
 ): Promise<RecommendationResult> {
-  const weather = await fetchWeather(location);
+  const weather = await fetchWeather(location, activity.durationMinutes);
   return getRecommendationFromWeather(location, weather, activity, user);
 }
 
@@ -44,7 +47,7 @@ export function getRecommendationFromWeather(
   );
   const targetClo = getTargetClo(effectiveTemp);
 
-  const { notes, summary, ...garments } = buildRecommendations(
+  const { notes: baseNotes, summary, ...garments } = buildRecommendations(
     effectiveTemp,
     weather.windSpeed,
     weather.precipitation,
@@ -58,14 +61,35 @@ export function getRecommendationFromWeather(
     activity.type
   );
 
+  const forecastAlerts = analyzeForecastWindow(weather, activity.durationMinutes);
+
+  // Forecast-driven additions: rain gear reminder + notes
+  const extraBackpack: string[] = [];
+  const forecastNotes: string[] = [];
+  for (const alert of forecastAlerts) {
+    if (alert.type === 'regn') {
+      const hasRainGear = garments.upperBody.outerLayer?.item.toLowerCase().includes('regn') ?? false;
+      if (!hasRainGear) {
+        extraBackpack.push(`Regnjakke i sekken — ${alert.message.toLowerCase()}`);
+      }
+    }
+    forecastNotes.push(alert.message);
+  }
+
+  const updatedGarments: BodyZoneRecommendations = {
+    ...garments,
+    backpackExtras: [...garments.backpackExtras, ...extraBackpack],
+  };
+
   return {
     weather: { ...weather, location },
     apparentTemp,
     effectiveTemp,
     targetClo,
-    garments,
-    notes,
+    garments: updatedGarments,
+    notes: [...baseNotes, ...forecastNotes],
     safetyWarnings,
     summary,
+    forecastAlerts,
   };
 }

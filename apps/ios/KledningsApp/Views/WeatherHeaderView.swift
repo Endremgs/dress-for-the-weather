@@ -59,13 +59,13 @@ struct WeatherHeaderView: View {
                 Spacer()
                 WeatherStatCell(
                     icon: "thermometer.medium",
-                    value: "\(result.effectiveTemp, specifier: "%.1f")°",
+                    value: String(format: "%.1f°", result.effectiveTemp),
                     label: "Effektiv"
                 )
                 Spacer()
                 WeatherStatCell(
                     icon: "tshirt.fill",
-                    value: "\(result.targetClo, specifier: "%.2f")",
+                    value: String(format: "%.2f", result.targetClo),
                     label: "CLO"
                 )
             }
