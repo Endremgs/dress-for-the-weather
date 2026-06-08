@@ -6,22 +6,31 @@ struct WatchRecommendationView: View {
     let locationName: String
     let onChangeTap: () -> Void
 
-    private var precipitationText: String {
-        let prob = Int(result.weather.precipitationProb)
+    private var conditionIcon: String {
         switch result.weather.precipitation {
-        case "none":     return prob < 10 ? "Tørt" : "\(prob)%"
-        case "light":    return "Lett \(prob)%"
-        case "moderate": return "Mod. \(prob)%"
-        default:         return "Kraftig"
-        }
-    }
-
-    private var precipitationIcon: String {
-        switch result.weather.precipitation {
-        case "none":     return "drop"
+        case "none":
+            let c = result.weather.cloudCover
+            if c < 25  { return "sun.max.fill" }
+            if c < 60  { return "cloud.sun.fill" }
+            if c < 85  { return "cloud.fill" }
+            return "smoke.fill"
         case "light":    return "cloud.drizzle.fill"
         case "moderate": return "cloud.rain.fill"
         default:         return "cloud.heavyrain.fill"
+        }
+    }
+
+    private var conditionLabel: String {
+        switch result.weather.precipitation {
+        case "none":
+            let c = result.weather.cloudCover
+            if c < 25  { return "Klarvær" }
+            if c < 60  { return "Delvis skyet" }
+            if c < 85  { return "Skyet" }
+            return "Overskyet"
+        case "light":    return "Lett nedbør"
+        case "moderate": return "Moderat nedbør"
+        default:         return "Kraftig nedbør"
         }
     }
 
@@ -47,7 +56,7 @@ struct WatchRecommendationView: View {
                         .buttonStyle(.plain)
                     }
 
-                    // Activity + temperature + wind
+                    // Activity + temperature + condition
                     HStack(alignment: .center, spacing: 6) {
                         Image(systemName: activity.sfSymbol)
                             .font(.title3)
@@ -55,26 +64,28 @@ struct WatchRecommendationView: View {
                         Text("\(result.weather.airTemp, specifier: "%.0f")°C")
                             .font(.headline)
                         Spacer()
-                        HStack(spacing: 2) {
-                            Image(systemName: "wind")
+                        HStack(spacing: 3) {
+                            Image(systemName: conditionIcon)
+                                .font(.caption)
+                                .foregroundStyle(.blue.opacity(0.85))
+                                .symbolRenderingMode(.hierarchical)
+                            Text(conditionLabel)
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
-                            Text("\(result.weather.windSpeed, specifier: "%.1f") m/s")
-                                .font(.caption2)
                         }
                     }
 
-                    // Effective temp + precipitation
+                    // Effective temp + wind
                     HStack {
                         Text("Eff. \(result.effectiveTemp, specifier: "%.0f")°")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                         Spacer()
                         HStack(spacing: 2) {
-                            Image(systemName: precipitationIcon)
+                            Image(systemName: "wind")
                                 .font(.caption2)
-                                .foregroundStyle(.blue.opacity(0.8))
-                            Text(precipitationText)
+                                .foregroundStyle(.secondary)
+                            Text("\(result.weather.windSpeed, specifier: "%.1f") m/s")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }

@@ -10,9 +10,23 @@ function precipLabel(p: string) {
   return map[p] ?? p;
 }
 
-function precipIcon(p: string) {
-  const map: Record<string, string> = { none: '☀️', light: '🌦️', moderate: '🌧️', heavy: '⛈️' };
-  return map[p] ?? '🌤️';
+function skyIcon(precipitation: string, cloudCover: number) {
+  if (precipitation !== 'none') {
+    const map: Record<string, string> = { light: '🌦️', moderate: '🌧️', heavy: '⛈️' };
+    return map[precipitation] ?? '🌧️';
+  }
+  if (cloudCover < 25)  return '☀️';
+  if (cloudCover < 60)  return '⛅';
+  if (cloudCover < 85)  return '🌥️';
+  return '☁️';
+}
+
+function skyLabel(precipitation: string, cloudCover: number) {
+  if (precipitation !== 'none') return precipLabel(precipitation);
+  if (cloudCover < 25)  return 'Klarvær';
+  if (cloudCover < 60)  return 'Delvis skyet';
+  if (cloudCover < 85)  return 'Skyet';
+  return 'Overskyet';
 }
 
 export function WeatherCard({ result, locationName }: Props) {
@@ -31,7 +45,7 @@ export function WeatherCard({ result, locationName }: Props) {
           </p>
         </div>
         <div className="text-right text-sm space-y-1">
-          <p>{precipIcon(weather.precipitation)} {precipLabel(weather.precipitation)}</p>
+          <p>{skyIcon(weather.precipitation, weather.cloudCover)} {skyLabel(weather.precipitation, weather.cloudCover)}</p>
           <p>💨 {weather.windSpeed.toFixed(1)} m/s</p>
           <p>💧 {weather.humidity.toFixed(0)}% fuktighet</p>
           {weather.precipitationProb > 0 && (

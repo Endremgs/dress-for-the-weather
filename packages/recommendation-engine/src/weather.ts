@@ -11,6 +11,7 @@ interface MetTimeseries {
         air_temperature: number;
         wind_speed: number;
         relative_humidity: number;
+        cloud_area_fraction?: number;
       };
     };
     next_1_hours?: {
@@ -88,6 +89,7 @@ export async function fetchWeather(location: Location, durationMinutes = 60): Pr
     humidity: instant.relative_humidity,
     precipitation: classifyPrecipitation(precipAmount),
     precipitationProb: precipProb,
+    cloudCover: instant.cloud_area_fraction ?? 50,
     forecastWindow,
   };
 }

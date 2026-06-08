@@ -35,6 +35,7 @@ export interface WeatherInput {
   humidity: number;
   precipitation: PrecipitationLevel;
   precipitationProb: number;
+  cloudCover: number; // 0–100 %
   forecastWindow: ForecastEntry[];
 }
 

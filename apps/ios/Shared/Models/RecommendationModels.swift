@@ -68,6 +68,7 @@ struct WeatherData: Codable {
     let humidity: Double
     let precipitation: String
     let precipitationProb: Double
+    let cloudCover: Double
     let location: WeatherLocation
 }
 
