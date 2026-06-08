@@ -155,9 +155,9 @@ describe('upper body - base layer', () => {
     expect(r.upperBody.baseLayer.material).toBe('syntetisk eller merino');
   });
 
-  test('sykling uses syntetisk material (high intensity)', () => {
+  test('sykling uses syntetisk material (activity-specific base layer)', () => {
     const r = buildRecommendations(0, 0, 'none', 'sykling');
-    expect(r.upperBody.baseLayer.material).toBe('syntetisk eller merino');
+    expect(r.upperBody.baseLayer.material).toBe('syntetisk fleece-børstet');
   });
 
   test('fjelltur uses merino material (low intensity)', () => {
@@ -247,16 +247,16 @@ describe('upper body - outer layer', () => {
     expect(r.upperBody.outerLayer).toMatchObject({ required: true, item: 'Hardshell regnjakke' });
   });
 
-  test('heavy precipitation overrides sykling-specific layer', () => {
+  test('heavy precipitation + sykling → activity-specific rain jacket', () => {
     const r = buildRecommendations(10, 0, 'heavy', 'sykling');
-    expect(r.upperBody.outerLayer?.item).toBe('Hardshell regnjakke');
+    expect(r.upperBody.outerLayer?.item).toBe('Sykkeljakke regn (vanntett)');
   });
 
-  test('light precipitation + sykling → Isolert regnjakke (sykling)', () => {
+  test('light precipitation + sykling → Sykkeljakke regn (vanntett)', () => {
     const r = buildRecommendations(10, 0, 'light', 'sykling');
     expect(r.upperBody.outerLayer).toMatchObject({
       required: true,
-      item: 'Isolert regnjakke (sykling)',
+      item: 'Sykkeljakke regn (vanntett)',
     });
   });
 
@@ -269,7 +269,7 @@ describe('upper body - outer layer', () => {
     const r = buildRecommendations(-7, 0, 'none', 'rusling');
     expect(r.upperBody.outerLayer).toMatchObject({
       required: true,
-      item: 'Vindtett løpe-/sykkeljakke',
+      item: 'Vindtett løpe-/turjakke',
     });
   });
 
@@ -278,7 +278,7 @@ describe('upper body - outer layer', () => {
     const r = buildRecommendations(10, 6, 'none', 'rusling');
     expect(r.upperBody.outerLayer).toMatchObject({
       required: true,
-      item: 'Vindtett løpe-/sykkeljakke',
+      item: 'Vindtett løpe-/turjakke',
     });
   });
 
@@ -323,9 +323,9 @@ describe('lower body - outer layer', () => {
     expect(r.lowerBody.outerLayer).toMatchObject({ item: 'Shorts' });
   });
 
-  test('løping, effectiveTemp > 15 → Shorts', () => {
+  test('løping, effectiveTemp > 10 → Løpeshorts', () => {
     const r = buildRecommendations(17, 0, 'none', 'løping');
-    expect(r.lowerBody.outerLayer.item).toBe('Shorts');
+    expect(r.lowerBody.outerLayer.item).toBe('Løpeshorts');
   });
 
   test('rusling, effectiveTemp = 17 → NOT shorts (only løping gets shorts below 20°C)', () => {
@@ -333,9 +333,9 @@ describe('lower body - outer layer', () => {
     expect(r.lowerBody.outerLayer.item).not.toBe('Shorts');
   });
 
-  test('sykling, effectiveTemp between 10 and 20 → Sykkelshorts/-tights', () => {
+  test('sykling, effectiveTemp between 12 and 16 → Sykkelshorts (bib) + knevarmere', () => {
     const r = buildRecommendations(12, 0, 'none', 'sykling');
-    expect(r.lowerBody.outerLayer.item).toBe('Sykkelshorts/-tights');
+    expect(r.lowerBody.outerLayer.item).toBe('Sykkelshorts (bib) + knevarmere');
   });
 
   test('non-sykling, effectiveTemp between 10 and 20 → Lett friluftsbukse', () => {
@@ -353,9 +353,9 @@ describe('lower body - outer layer', () => {
     expect(r.lowerBody.outerLayer.item).toBe('Softshell-bukse / tights + regnbukse');
   });
 
-  test('sykling, effectiveTemp between 0 and 10 → Lange sykkel-tights', () => {
+  test('sykling, effectiveTemp between 0 and 7 → Termiske sykkel-tights', () => {
     const r = buildRecommendations(5, 0, 'none', 'sykling');
-    expect(r.lowerBody.outerLayer.item).toBe('Lange sykkel-tights');
+    expect(r.lowerBody.outerLayer.item).toBe('Termiske sykkel-tights');
   });
 
   test('effectiveTemp <= 0, no precip → Vinterbukse / isolerte tights', () => {
@@ -401,19 +401,19 @@ describe('backpack extras - domain rules', () => {
     expect(r.backpackExtras).toContain('Lett dunjakke');
   });
 
-  test('sykling < 15°C, ingen nedbør → Lett regnjakke i vesken', () => {
+  test('sykling < 15°C, ingen nedbør → Lett sykkeljakke regn i ryggvesken', () => {
     const r = buildRecommendations(10, 0, 'none', 'sykling');
-    expect(r.backpackExtras).toContain('Lett regnjakke i vesken');
+    expect(r.backpackExtras).toContain('Lett sykkeljakke regn i ryggvesken');
   });
 
   test('sykling < 15°C med nedbør → ingen ekstra regnjakke (har allerede på)', () => {
     const r = buildRecommendations(10, 0, 'light', 'sykling');
-    expect(r.backpackExtras).not.toContain('Lett regnjakke i vesken');
+    expect(r.backpackExtras).not.toContain('Lett sykkeljakke regn i ryggvesken');
   });
 
   test('sykling >= 15°C → ingen ekstra regnjakke', () => {
     const r = buildRecommendations(20, 0, 'none', 'sykling');
-    expect(r.backpackExtras).not.toContain('Lett regnjakke i vesken');
+    expect(r.backpackExtras).not.toContain('Lett sykkeljakke regn i ryggvesken');
   });
 
   test('løping < 5°C → Ekstra jakke for avkjøling', () => {
@@ -455,22 +455,22 @@ describe('activity notes', () => {
 
   test('sykling: alltid motvind-advarsel', () => {
     const r = buildRecommendations(20, 0, 'none', 'sykling');
-    expect(r.notes).toContain('Motvind øker effektiv vindavkjøling dramatisk');
+    expect(r.notes).toContain('Motvind øker effektiv vindavkjøling dramatisk — kle deg for det kaldeste punktet');
   });
 
-  test('sykling < 15°C: kne-varmer-note', () => {
+  test('sykling < 16°C: kne-varmer-note', () => {
     const r = buildRecommendations(12, 0, 'none', 'sykling');
-    expect(r.notes).toContain('Kne-varmere anbefalt under 15°C');
+    expect(r.notes).toContain('Knevarmere ved 10–16°C — knær tåler dårlig kulde under dynamisk bevegelse');
   });
 
-  test('sykling >= 15°C: ingen kne-varmer-note', () => {
+  test('sykling >= 16°C: ingen kne-varmer-note', () => {
     const r = buildRecommendations(18, 0, 'none', 'sykling');
-    expect(r.notes).not.toContain('Kne-varmere anbefalt under 15°C');
+    expect(r.notes).not.toContain('Knevarmere ved 10–16°C — knær tåler dårlig kulde under dynamisk bevegelse');
   });
 
-  test('sykling < 10°C: skoovertrekk-note', () => {
+  test('sykling < 12°C: skoovertrekk-note', () => {
     const r = buildRecommendations(7, 0, 'none', 'sykling');
-    expect(r.notes).toContain('Skoovertrekk mot vind og kulde');
+    expect(r.notes).toContain('Skoovertrekk mot vind og kulde — neopren anbefalt');
   });
 
   test('fjelltur: alltid ekstra-lag-note og aldri-bomull-note', () => {
@@ -487,7 +487,7 @@ describe('activity notes', () => {
 
   test('alpint: stillesittende-note', () => {
     const r = buildRecommendations(0, 0, 'none', 'alpint');
-    expect(r.notes).toContain('Heisturer er stillesittende — ta hensyn til kjøling');
+    expect(r.notes).toContain('Heis-turer er stillesittende — ta hensyn til kjøling mellom kjøringene');
   });
 
   test('alpint med nedbør: vanntett-note', () => {
@@ -502,7 +502,7 @@ describe('activity notes', () => {
 
   test('klatring < 5°C: hansker-av-note', () => {
     const r = buildRecommendations(3, 0, 'none', 'klatring');
-    expect(r.notes).toContain('Hansker som kan tas av raskt ved klatring');
+    expect(r.notes).toContain('Hansker som kan tas av raskt ved aktiv klatring');
   });
 
   test('svømming: fokus på vanntemp og varmt antrekk klart', () => {
@@ -514,6 +514,32 @@ describe('activity notes', () => {
   test('rusling: ingen spesifikke notes', () => {
     const r = buildRecommendations(10, 0, 'none', 'rusling');
     expect(r.notes).toHaveLength(0);
+  });
+});
+
+describe('mandatory gear', () => {
+  test('sykling: hjelm alltid med', () => {
+    const r = buildRecommendations(20, 0, 'none', 'sykling');
+    expect(r.mandatoryGear.some(g => g.includes('Sykkelhjelm'))).toBe(true);
+  });
+
+  test('alpint: skihjelm og goggles', () => {
+    const r = buildRecommendations(0, 0, 'none', 'alpint');
+    expect(r.mandatoryGear.some(g => g.includes('Skihjelm'))).toBe(true);
+    expect(r.mandatoryGear.some(g => g.includes('goggles'))).toBe(true);
+  });
+
+  test('klatring: klatrehjelm og sele', () => {
+    const r = buildRecommendations(10, 0, 'none', 'klatring');
+    expect(r.mandatoryGear.some(g => g.includes('Klatrehjelm'))).toBe(true);
+    expect(r.mandatoryGear.some(g => g.includes('Klatresele'))).toBe(true);
+  });
+
+  test('rusling, løping, fjelltur: ingen mandatory gear', () => {
+    for (const activity of ['rusling', 'løping', 'fjelltur'] as const) {
+      const r = buildRecommendations(10, 0, 'none', activity);
+      expect(r.mandatoryGear).toHaveLength(0);
+    }
   });
 });
 
@@ -538,9 +564,9 @@ describe('summary', () => {
     expect(r.summary).toBe('Langrenn: Termo + fleece + vindjakke');
   });
 
-  test('between -5 and 0 → Full vinter-utrustning', () => {
+  test('alpint between -5 and 0 → activity-specific winter summary', () => {
     const r = buildRecommendations(-3, 0, 'none', 'alpint');
-    expect(r.summary).toBe('Alpint: Full vinter-utrustning');
+    expect(r.summary).toBe('Alpint: Full vinter-skiutrustning + hjelm + goggles');
   });
 
   test('<= -5 → Ekspedisjons-nivå', () => {

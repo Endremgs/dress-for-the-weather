@@ -193,6 +193,132 @@ Grunnprinsippet for alle utendørsaktiviteter i variabelt norsk vær.
 
 ---
 
+## Aktivitetsspesifikke plagg
+
+Plagg designet for spesifikke aktiviteter med tilpasset CLO-verdier. Erstatter generiske plagg i anbefalinger for den aktuelle aktiviteten.
+
+### Sykling
+
+#### Nedre kropp
+
+| Plagg | CLO | Temp-område | Merknad |
+|---|---|---|---|
+| Sykkelshorts (bib shorts, sommer) | 0.06–0.08 | > 16°C | Kompresjonstrikot med pute (pad) |
+| 3/4 sykkel-tights | 0.12–0.16 | 12–16°C | Kne- og lårbeskyttelse |
+| Sykkel-tights (tynn, ikke termisk) | 0.14–0.18 | 7–13°C | Full lengde |
+| Sykkel-tights (termisk/fleece-foret) | 0.25–0.35 | 0–7°C | Foret interiør |
+| Knevarmere | 0.08–0.12 | 10–16°C | Festet til sykkelshorts |
+| Benvarmere (leg warmers) | 0.12–0.16 | 8–14°C | Alternativ til tights |
+
+#### Overkropp
+
+| Plagg | CLO | Temp-område | Merknad |
+|---|---|---|---|
+| Sykkeltrøye kortermet (sommer) | 0.10–0.14 | > 16°C | Polyester mesh, svelomer bak |
+| Sykkeltrøye langermet | 0.20–0.25 | 10–16°C | Tettere veving enn kortarm |
+| Termisk sykkeltrøye langermet | 0.30–0.36 | 4–10°C | Fleece-børstet interiør |
+| Armmere (arm warmers) | 0.08–0.12 | 12–18°C | Lett å ta av under ritt |
+| Sykkelvest (gilet) | 0.12–0.18 | 12–18°C | Vind-foran, pust bak |
+| Sykkeljakke vindtett (packable) | 0.18–0.25 | 8–14°C | Lett ripstop, vind + lett regn |
+| Sykkeljakke softshell | 0.30–0.40 | 4–10°C | Stretch softshell |
+| Sykkeljakke vinter (termisk) | 0.40–0.55 | −5–5°C | Isolert, vindtett |
+| Sykkeljakke regn (vanntett) | 0.15–0.22 | — | Vanntett membran, ikke isolasjon |
+
+#### Hender og føtter
+
+| Plagg | CLO | Temp-område |
+|---|---|---|
+| Fingerfrie sykkelhansker | 0.04–0.06 | > 20°C |
+| Lette sykkelhansker (full finger) | 0.08–0.12 | 12–20°C |
+| Mellom sykkelhansker (softshell) | 0.14–0.20 | 4–12°C |
+| Tykke vinter-sykkelhansker | 0.22–0.30 | −5–4°C |
+| Sykkelvotter / hummer-hansker | 0.25–0.35 | < −5°C |
+| Skoovertrekk tå (toe covers) | 0.04–0.06 | 12–18°C |
+| Skoovertrekk neopren (full) | 0.10–0.16 | 4–12°C |
+| Skoovertrekk vinter (isolert) | 0.14–0.20 | < 4°C |
+
+#### Obligatorisk sikkerhetsutstyr — Sykling
+
+| Utstyr | Krav | Standard |
+|---|---|---|
+| **Hjelm** | Sterkt anbefalt (ikke lovpålagt voksne i Norge) | EN 1078 |
+| Sykkelhjelm under 15 år | **Lovpålagt** i mange kommuner | EN 1078 |
+| Sykkelbriller / solbriller | Anbefalt (UV + steiner/insekter) | — |
+| Refleks / lys | Lovpålagt i mørke | Norsk veitrafikkloven |
+
+---
+
+### Løping
+
+| Plagg | CLO | Temp-område |
+|---|---|---|
+| Løpeshorts | 0.06–0.08 | > 10°C (> 5°C intenst) |
+| Løpe-tights (tynne) | 0.14–0.18 | 0–10°C |
+| Løpe-tights (termisk/fleece) | 0.22–0.28 | < 0°C |
+| Løpet-skjorte singlet/tank | 0.06–0.08 | > 15°C |
+| Løpe-t-skjorte kortarm | 0.10–0.14 | 10–20°C |
+| Løpe-genser langermet | 0.20–0.25 | 4–12°C |
+| Løpejakke (vindtett lett) | 0.15–0.22 | 4–12°C |
+| Løpejakke softshell | 0.28–0.38 | < 4°C |
+| Løpehansker (tynne) | 0.06–0.10 | −2–8°C |
+| Løpelue / pannebånd | 0.10–0.14 | < 8°C |
+
+**Refleks** er viktig for løping i mørke — anbefal ved lav siktbarhet.
+
+---
+
+### Langrenn
+
+| Plagg | CLO | Temp-område | Merknad |
+|---|---|---|---|
+| Langrennsdress (ett-plagg) | 0.12–0.18 | −4 til +5°C | Optimal racing range |
+| Langrenn-tights (tynne) | 0.18–0.24 | 0–5°C | Glatt utside, lavt luftmotstand |
+| Langrenn-tights (softshell) | 0.22–0.30 | −10–0°C | Vindtett fortil |
+| Langrenn-trøye (tynn, vindtett) | 0.20–0.28 | 0 til −5°C | Pustende bak, vind fremover |
+| Langrenn-jakke (softshell) | 0.28–0.38 | < −5°C | Høy pustbarhet |
+| Langrennsvotter | 0.15–0.22 | < −5°C | Polstret håndflate |
+
+**Merknad**: "Vær kald ved start" — kroppen varmer seg opp innen 5–10 min. Kle deg somøm det er 10–15°C varmere.
+
+---
+
+### Alpint / Snowboard
+
+| Plagg | CLO | Merknad |
+|---|---|---|
+| Ski-base layer (lett termisk) | 0.18–0.25 | — |
+| Ski-base layer (tung merino) | 0.28–0.38 | Anbefalt for stillesittende heis-perioder |
+| Ski-mellomlag fleece | 0.28–0.40 | 100–200-vekt avh. av temp |
+| Skijakke (lett, isolert) | 0.45–0.60 | > 0°C |
+| Skijakke (tung, isolert) | 0.65–0.85 | < 0°C |
+| Salopetter/skibukse (shell) | 0.15–0.22 | — |
+| Salopetter/skibukse (isolert) | 0.35–0.55 | Anbefalt < 0°C |
+| Ski-hansker | 0.14–0.20 | — |
+| Ski-votter (isolert) | 0.25–0.40 | < −5°C |
+| Ski-sokker (merino) | 0.04–0.07 | Tynn — alpinstøvler er isolert |
+
+#### Obligatorisk sikkerhetsutstyr — Alpint/Snowboard
+
+| Utstyr | Krav | Standard |
+|---|---|---|
+| **Skihjelm** | Sterkt anbefalt (~85% av norske skiløpere bruker frivillig) | EN 1077 |
+| **Skibriller (goggles)** | Sterkt anbefalt (UV, vind, snø-impact) | EN 174 |
+| Ryggbeskytter / airbag-vest | Anbefalt ved avansert kjøring | — |
+
+---
+
+### Klatring (utendørs)
+
+#### Obligatorisk sikkerhetsutstyr — Klatring
+
+| Utstyr | Krav | Standard |
+|---|---|---|
+| **Klatrehjelm** | Sterkt anbefalt utendørs; obligatorisk via ferrata | EN 12492 / UIAA 106 |
+| Klatresele | Obligatorisk tausikring | EN 12277 |
+| Klatresko | Spesialsko for grep | — |
+
+---
+
 ## Materialnøkkel
 
 ### "Cotton Kills" — Hvorfor bomull er farlig
