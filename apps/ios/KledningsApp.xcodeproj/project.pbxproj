@@ -23,6 +23,8 @@
 		83617A01499211A626D4C3CF /* KledningsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB877DACBD0B253928C5933 /* KledningsApp.swift */; };
 		8BDA721CD71729F38C1DD05B /* OutfitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A2106D5AC09540A384CDEE /* OutfitView.swift */; };
 		92CC4D100E61088BCA8A2350 /* WeatherHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16598D60B6A582C93029C052 /* WeatherHeaderView.swift */; };
+		AA11BB22CC33DD44EE55FF66 /* ForecastTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD44EE55FF66AA11 /* ForecastTimelineView.swift */; };
+		CC33DD44EE55FF66AA11BB22 /* WeatherOverrideSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD44EE55FF66AA11BB22CC33 /* WeatherOverrideSheet.swift */; };
 		9FBD7653327D7E5E7795314B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD8E3315D13D9DCD61D1359 /* APIService.swift */; };
 		A233EE9B8B0139EB337BD57E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1535E8575BF51298730C7F78 /* Assets.xcassets */; };
 		ACFD99D92F3FD8D2EB80E79D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F257E4FBDBB30EC93FE3061F /* Assets.xcassets */; };
@@ -104,6 +106,8 @@
 		E9961AE237B79330E7FB95A4 /* ActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPickerView.swift; sourceTree = "<group>"; };
 		F257E4FBDBB30EC93FE3061F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3A2106D5AC09540A384CDEE /* OutfitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitView.swift; sourceTree = "<group>"; };
+		BB22CC33DD44EE55FF66AA11 /* ForecastTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastTimelineView.swift; sourceTree = "<group>"; };
+		DD44EE55FF66AA11BB22CC33 /* WeatherOverrideSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherOverrideSheet.swift; sourceTree = "<group>"; };
 		F62091AA40D90A368F53CA78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FAA9BDA56394CE2BFF7E69BB /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		A3C8E0F2B5D7490E6C1A2B3C /* Oslo.gpx */ = {isa = PBXFileReference; lastKnownFileType = text; name = Oslo.gpx; path = Oslo.gpx; sourceTree = "<group>"; };
@@ -154,9 +158,11 @@
 			children = (
 				E9961AE237B79330E7FB95A4 /* ActivityPickerView.swift */,
 				559E6E1061E8EDF731BE2AE1 /* ContentView.swift */,
+				BB22CC33DD44EE55FF66AA11 /* ForecastTimelineView.swift */,
 				F3A2106D5AC09540A384CDEE /* OutfitView.swift */,
 				49E2339496460A5990908865 /* SafetyWarningsView.swift */,
 				16598D60B6A582C93029C052 /* WeatherHeaderView.swift */,
+				DD44EE55FF66AA11BB22CC33 /* WeatherOverrideSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -405,6 +411,8 @@
 				E5102984A3AF7F2F4C33ADB7 /* RecommendationModels.swift in Sources */,
 				59D1641E49064E0E50AC1B05 /* SafetyWarningsView.swift in Sources */,
 				92CC4D100E61088BCA8A2350 /* WeatherHeaderView.swift in Sources */,
+				AA11BB22CC33DD44EE55FF66 /* ForecastTimelineView.swift in Sources */,
+				CC33DD44EE55FF66AA11BB22 /* WeatherOverrideSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
