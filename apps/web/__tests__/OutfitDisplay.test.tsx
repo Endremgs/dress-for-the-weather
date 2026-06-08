@@ -29,6 +29,7 @@ const baseResult: RecommendationResult = {
     hands: { item: 'Tynne hansker', required: true, clo: 0.1 },
     feet: { item: 'Ullsokker', required: true, clo: 0.1 },
     backpackExtras: ['Regnjakke', 'Ekstra lag'],
+    mandatoryGear: [],
   },
   notes: ['Ta med vann', 'Solfaktor anbefales'],
   summary: 'Kjølig dag — kle deg i lag',
