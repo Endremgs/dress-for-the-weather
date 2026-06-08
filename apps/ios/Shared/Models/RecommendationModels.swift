@@ -62,6 +62,16 @@ struct WeatherLocation: Codable {
     let lon: Double
 }
 
+struct ForecastEntryData: Codable, Identifiable {
+    var id: String { time }
+    let time: String
+    let airTemp: Double
+    let windSpeed: Double
+    let precipitation: String
+    let precipitationProb: Double
+    let cloudCover: Double?
+}
+
 struct WeatherData: Codable {
     let airTemp: Double
     let windSpeed: Double
@@ -70,6 +80,7 @@ struct WeatherData: Codable {
     let precipitationProb: Double
     let cloudCover: Double
     let location: WeatherLocation
+    let forecastWindow: [ForecastEntryData]
 }
 
 enum WarningLevel: String, Codable {

@@ -151,6 +151,17 @@ struct WatchRecommendationView: View {
                     }
                 }
 
+                // Forecast timeline (compact Watch variant — vertical, max 3 entries)
+                if !result.weather.forecastWindow.isEmpty {
+                    Divider()
+                    Text("Vær under turen")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    ForEach(result.weather.forecastWindow.prefix(3)) { entry in
+                        WatchForecastRow(entry: entry)
+                    }
+                }
+
                 // Forecast alerts
                 if !result.forecastAlerts.isEmpty {
                     Divider()
@@ -174,6 +185,69 @@ struct WatchRecommendationView: View {
         }
     }
 
+}
+
+struct WatchForecastRow: View {
+    let entry: ForecastEntryData
+
+    private func formatTime(_ isoString: String) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        var date = formatter.date(from: isoString)
+        if date == nil {
+            formatter.formatOptions = .withInternetDateTime
+            date = formatter.date(from: isoString)
+        }
+        guard let d = date else { return isoString }
+        let out = DateFormatter()
+        out.dateFormat = "HH:mm"
+        return out.string(from: d)
+    }
+
+    private var conditionIcon: String {
+        let cover = entry.cloudCover ?? 50
+        switch entry.precipitation {
+        case "heavy":    return "cloud.heavyrain.fill"
+        case "moderate": return "cloud.rain.fill"
+        case "light":    return "cloud.drizzle.fill"
+        default:
+            if cover < 25  { return "sun.max.fill" }
+            if cover < 60  { return "cloud.sun.fill" }
+            return "cloud.fill"
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text(formatTime(entry.time))
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.secondary)
+                .frame(width: 34, alignment: .leading)
+            Image(systemName: conditionIcon)
+                .font(.caption2)
+                .foregroundStyle(.blue)
+                .symbolRenderingMode(.hierarchical)
+            Text("\(entry.airTemp, specifier: "%.0f")°")
+                .font(.caption2.weight(.semibold))
+                .monospacedDigit()
+            Spacer()
+            if entry.precipitationProb > 5 {
+                Text("\(entry.precipitationProb, specifier: "%.0f")%")
+                    .font(.caption2)
+                    .foregroundStyle(.blue)
+                    .monospacedDigit()
+            }
+            HStack(spacing: 2) {
+                Image(systemName: "wind")
+                    .font(.system(size: 8))
+                    .foregroundStyle(.secondary)
+                Text("\(entry.windSpeed, specifier: "%.0f")")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
+            }
+        }
+    }
 }
 
 struct WatchLayerRow: View {
