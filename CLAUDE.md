@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Cross-Platform Regel
+
+**VIKTIG:** Denne appen finnes på tre plattformer:
+- `apps/web` — Next.js-webapp
+- `apps/ios/KledningsApp` — iOS-app (Swift/SwiftUI)
+- `apps/ios/KledningsWatch` — Apple Watch-app (SwiftUI)
+
+Når det legges til ny funksjonalitet eller gjøres endringer i én av appene, **skal den samme funksjonaliteten implementeres i alle tre appene** i samme arbeidsøkt, med mindre du eksplisitt blir bedt om noe annet. Hvis en funksjon ikke er teknisk mulig på én plattform (f.eks. en Watch-begrensning), skal du si fra om det og forklare hvorfor.
+
 ## What This Project Is
 
 A domain-knowledge repository for a clothing recommendation app ("Kle deg etter været" — dress for the weather). The app recommends what to wear based on weather conditions, activity type, and duration. The language throughout is Norwegian.
