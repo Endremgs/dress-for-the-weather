@@ -94,7 +94,7 @@ export function ForecastTimeline({ weather, durationMinutes }: Props) {
 
   // Build the "now" entry + forecast entries within the activity window
   const hoursNeeded = Math.ceil(durationMinutes / 60);
-  const entries = forecastWindow.slice(0, hoursNeeded);
+  const entries = forecastWindow?.slice(0, hoursNeeded) ?? [];
 
   // No forecast data available in manual mode or short activities
   if (entries.length === 0) return null;
