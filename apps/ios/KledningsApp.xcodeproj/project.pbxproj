@@ -33,6 +33,7 @@
 		E044DD3A76CC0EC3B0B50331 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F84BF1DB07BC7C671C9679D /* LocationService.swift */; };
 		E5102984A3AF7F2F4C33ADB7 /* RecommendationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D1092A797F64E97022B74 /* RecommendationModels.swift */; };
 		EA8A6DA94162561693F2D467 /* WatchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AF283DD1A5F16CDCBD2BB4 /* WatchContentView.swift */; };
+		651108A553E447A6972F7ED8 /* WatchOverrideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */; };
 		F0E3C39DE174D99CB2B61954 /* RecommendationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D1092A797F64E97022B74 /* RecommendationModels.swift */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		949C9E3FDEB187B8AE1E1084 /* WidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntryView.swift; sourceTree = "<group>"; };
 		9785278406AABC7796715CE8 /* KledningsWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KledningsWatchApp.swift; sourceTree = "<group>"; };
 		A114F16314D10F7FC40458C1 /* WatchRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRecommendationView.swift; sourceTree = "<group>"; };
+		18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchOverrideView.swift; sourceTree = "<group>"; };
 		AC25F09BF173B94CDA5AFA3A /* KledningsApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KledningsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF4D1092A797F64E97022B74 /* RecommendationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationModels.swift; sourceTree = "<group>"; };
 		E9961AE237B79330E7FB95A4 /* ActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPickerView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				0893EABF0732720EF3B78C3D /* WatchActivityPickerView.swift */,
 				28AF283DD1A5F16CDCBD2BB4 /* WatchContentView.swift */,
 				A114F16314D10F7FC40458C1 /* WatchRecommendationView.swift */,
+				18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				DDAD9C289EF2D3247C334BD7 /* WatchActivityPickerView.swift in Sources */,
 				EA8A6DA94162561693F2D467 /* WatchContentView.swift in Sources */,
 				69A51B17BF87069F42D9EE8D /* WatchRecommendationView.swift in Sources */,
+				651108A553E447A6972F7ED8 /* WatchOverrideView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
