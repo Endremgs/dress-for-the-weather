@@ -18,8 +18,11 @@ struct WatchActivityPickerView: View {
                     Button {
                         selectedActivity = activity
                     } label: {
-                        HStack {
-                            Text(activity.icon)
+                        HStack(spacing: 8) {
+                            Image(systemName: activity.sfSymbol)
+                                .font(.body)
+                                .foregroundStyle(.blue)
+                                .frame(width: 20)
                             Text(activity.label)
                                 .font(.body)
                             Spacer()
@@ -40,8 +43,7 @@ struct WatchActivityPickerView: View {
 
                 Picker("Varighet", selection: $durationMinutes) {
                     ForEach(durations, id: \.self) { d in
-                        Text(d < 60 ? "\(d) min" : "\(d / 60) t")
-                            .tag(d)
+                        Text(durationLabel(d)).tag(d)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -51,10 +53,18 @@ struct WatchActivityPickerView: View {
                     onConfirm()
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(.blue)
                 .padding(.top, 8)
             }
             .padding()
         }
         .navigationTitle("Kle deg")
+    }
+
+    private func durationLabel(_ minutes: Int) -> String {
+        if minutes < 60 { return "\(minutes) min" }
+        let hours = minutes / 60
+        let rem = minutes % 60
+        return rem == 0 ? "\(hours) t" : "\(hours)t \(rem)m"
     }
 }
