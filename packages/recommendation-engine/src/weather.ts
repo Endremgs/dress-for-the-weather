@@ -11,6 +11,7 @@ interface MetTimeseries {
         air_temperature: number;
         wind_speed: number;
         relative_humidity: number;
+        cloud_area_fraction?: number;
         precipitation_amount?: number;
       };
     };
@@ -68,5 +69,6 @@ export async function fetchWeather(location: Location): Promise<WeatherInput> {
     humidity: instant.relative_humidity,
     precipitation: classifyPrecipitation(precipAmount),
     precipitationProb: precipProb,
+    cloudCover: instant.cloud_area_fraction ?? 50,
   };
 }

@@ -80,7 +80,11 @@ struct WeatherHeaderView: View {
         switch result.weather.precipitation {
         case "none":
             if result.weather.airTemp < 0 { return "snowflake" }
-            return result.weather.airTemp < 12 ? "cloud.sun.fill" : "sun.max.fill"
+            let c = result.weather.cloudCover
+            if c < 25  { return "sun.max.fill" }
+            if c < 60  { return "cloud.sun.fill" }
+            if c < 85  { return "cloud.fill" }
+            return "smoke.fill"
         case "light":    return "cloud.drizzle.fill"
         case "moderate": return "cloud.rain.fill"
         default:         return "cloud.heavyrain.fill"
@@ -90,7 +94,12 @@ struct WeatherHeaderView: View {
     private var conditionLabel: String {
         switch result.weather.precipitation {
         case "none":
-            return result.weather.airTemp < 0 ? "Frost" : "Klarvær"
+            if result.weather.airTemp < 0 { return "Frost" }
+            let c = result.weather.cloudCover
+            if c < 25  { return "Klarvær" }
+            if c < 60  { return "Delvis skyet" }
+            if c < 85  { return "Skyet" }
+            return "Overskyet"
         case "light":    return "Lett nedbør"
         case "moderate": return "Moderat nedbør"
         default:         return "Kraftig nedbør"

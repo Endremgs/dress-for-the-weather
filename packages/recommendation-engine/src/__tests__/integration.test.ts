@@ -12,6 +12,7 @@ const coldWinterWeather: WeatherInput = {
   humidity: 70,
   precipitation: 'none',
   precipitationProb: 10,
+  cloudCover: 40,
 };
 
 const warmSummerWeather: WeatherInput = {
@@ -20,6 +21,7 @@ const warmSummerWeather: WeatherInput = {
   humidity: 55,
   precipitation: 'none',
   precipitationProb: 0,
+  cloudCover: 10,
 };
 
 const rainyWeather: WeatherInput = {
@@ -28,6 +30,7 @@ const rainyWeather: WeatherInput = {
   humidity: 90,
   precipitation: 'moderate',
   precipitationProb: 80,
+  cloudCover: 85,
 };
 
 describe('getRecommendationFromWeather - result shape', () => {
