@@ -1,68 +1,75 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
+
+## Hva dette prosjektet er
+
+En kledningsanbefalingsapp ("Kle deg etter været") for tre plattformer. Appen anbefaler klær basert på vær, aktivitet og varighet. All tekst er på norsk.
 
 ## Cross-Platform Regel
 
-**VIKTIG:** Denne appen finnes på tre plattformer:
-- `apps/web` — Next.js-webapp
-- `apps/ios/KledningsApp` — iOS-app (Swift/SwiftUI)
-- `apps/ios/KledningsWatch` — Apple Watch-app (SwiftUI)
+**KRITISK:** Appen finnes på **tre plattformer** — alle endringer skal implementeres på alle tre:
 
-Når det legges til ny funksjonalitet eller gjøres endringer i én av appene, **skal den samme funksjonaliteten implementeres i alle tre appene** i samme arbeidsøkt, med mindre du eksplisitt blir bedt om noe annet. Hvis en funksjon ikke er teknisk mulig på én plattform (f.eks. en Watch-begrensning), skal du si fra om det og forklare hvorfor.
+| Plattform | Teknologi | Sti |
+|-----------|-----------|-----|
+| Web | Next.js / TypeScript | `apps/web` |
+| iOS | Swift / SwiftUI | `apps/ios/KledningsApp` |
+| Watch | SwiftUI | `apps/ios/KledningsWatch` |
 
-## What This Project Is
+Unntak (Watch-begrensning o.l.) skal forklares eksplisitt. Se `/ny-funksjon` for arbeidsflyt.
 
-A domain-knowledge repository for a clothing recommendation app ("Kle deg etter været" — dress for the weather). The app recommends what to wear based on weather conditions, activity type, and duration. The language throughout is Norwegian.
+## Quick Start
 
-There is no runnable application yet — the repo contains structured domain knowledge and a reference TypeScript implementation of the recommendation algorithm.
-
-## Custom Commands
-
-Three project-level slash commands are defined in `.claude/commands/`:
-
-| Command | Purpose |
-|---|---|
-| `/domene-vær [spørsmål]` | Query `domain/weather.md` — API endpoints, parameters, thermal formulas |
-| `/domene-klær [spørsmål]` | Query `domain/clothing.md` — 3-layer system, CLO values, materials |
-| `/kle-deg [input]` | Full clothing recommendation — runs the complete algorithm against all domain files |
-
-The `/kle-deg` command expects weather data (temp, wind, humidity, precipitation) and activity (type, duration). It will ask for missing values.
-
-## Domain Architecture
-
-All domain knowledge lives in `domain/`. The files form a pipeline:
-
-```
-domain/weather.md          → raw weather data + thermal comfort formulas
-domain/activities.md       → MET values + activity-specific rules
-domain/clothing.md         → CLO values + 3-layer system + materials
-domain/recommendation-engine.md  → algorithm + TypeScript reference code
+```bash
+pnpm dev                  # Start Next.js web-app
+pnpm test                 # Kjør alle tester (recommendation-engine + web)
+pnpm build                # Bygg alt
+pnpm test:e2e             # Playwright-tester
 ```
 
-### Core Algorithm (recommendation-engine.md)
+For iOS/Watch: Åpne `apps/ios/KledningsApp.xcodeproj` i Xcode, velg simulator og kjør.
 
-Four sequential steps produce a garment recommendation:
+## Kommandoer & Skills
 
-1. **Apparent temperature** — wind chill (JAG/TI, valid T < 10°C, wind > 4.8 km/h) or Steadman formula (humidity-based)
-2. **Activity offset** — `(MET − 1.0) × 0.8` (e.g. running: +5.6°C, hiking: +3.6°C)
-3. **Effective comfort temperature** — apparent temp + activity offset − duration factor − precipitation penalty + user sensitivity
-4. **Target CLO** — lookup against `CLO_THRESHOLDS` → garment recommendations per body zone
+| Kommando | Formål |
+|----------|--------|
+| `/domene-vær` | Slå opp i `domain/weather.md` — API, parametere, termiske formler |
+| `/domene-klær` | Slå opp i `domain/clothing.md` — 3-lags-system, CLO-verdier |
+| `/domene-aktiviteter` | Slå opp i `domain/activities.md` — MET-verdier, aktivitetsregler |
+| `/kle-deg [input]` | Full kledningsanbefaling — kjører komplett algoritme |
+| `/ny-funksjon` | Sjekkliste for ny funksjonalitet på alle tre plattformer |
 
-### Weather Data Source
+Skills ligger i `.claude/skills/` (YAML) og `.claude/commands/` (slash-kommandoer).
 
-`api.met.no` — no API key required, but `User-Agent` header is mandatory per TOS. Primary endpoint: `locationforecast/2.0/compact`. For Norwegian users, `nowcast/2.0` provides 5-minute precipitation updates.
+## Domene-arkitektur
 
-Key fields from the API: `air_temperature`, `wind_speed`, `relative_humidity`, `precipitation_amount`, `probability_of_precipitation`.
+Fire filer danner en pipeline — les dem i denne rekkefølgen:
 
-### Key Domain Rules
+```
+domain/weather.md              → API-data + termiske formler
+domain/activities.md           → MET-verdier + aktivitetsregler
+domain/clothing.md             → CLO-verdier + 3-lags-system
+domain/recommendation-engine.md → algoritme + TypeScript-referansekode
+```
 
-- **Cotton kills**: Never recommend cotton below 15°C effective temp — loses 90% insulation when wet
-- **Running**: dress as if 10°C warmer; always moisture-wicking materials
-- **Cycling**: wind exposure 2–3× normal; always windproof below 15°C
-- **Hiking**: always pack extra layer + rain gear; Norwegian rule, no exceptions
-- **Cross-country skiing**: dress as if 15°C warmer — highest heat output of common activities
+## Prosjektstruktur
 
-### CLO System
+```
+apps/
+  web/                    # Next.js-app
+  ios/KledningsApp/       # iOS-app
+  ios/KledningsWatch/     # Watch-app
+packages/
+  recommendation-engine/  # Delt TypeScript-algoritme
+domain/                   # Domenekunnskap (kilde til sannhet)
+.claude/
+  commands/               # Slash-kommandoer
+  skills/                 # SDD-skills
+```
 
-`1 CLO = 0.155 m²·K/W`. Effective temp maps to a target CLO (e.g. 0°C → 1.00 CLO, −10°C → 1.45 CLO), which drives per-zone garment selection. CLO values for all garments are in `domain/clothing.md`.
+## Kritiske regler
+
+- **Cotton kills**: Anbefal aldri bomull under 15°C effektiv temp — mister 90% isolasjon når våt
+- **met.no User-Agent**: Obligatorisk header per TOS — appen stoppes uten den
+- **Tre plattformer**: Ny funksjonalitet implementeres alltid på alle tre i samme PR
+- **Hiking**: Alltid ekstra lag + regnplagg — norsk regel, ingen unntak
