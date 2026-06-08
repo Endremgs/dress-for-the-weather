@@ -25,6 +25,51 @@ struct OutfitView: View {
                     .stroke(.blue.opacity(0.2), lineWidth: 1)
             )
 
+            if !result.forecastAlerts.isEmpty {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "clock.badge.exclamationmark")
+                            .foregroundStyle(.orange)
+                            .font(.subheadline)
+                        Text("Varsler for turen")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 11)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.orange.opacity(0.08))
+
+                    VStack(spacing: 0) {
+                        ForEach(result.forecastAlerts) { alert in
+                            HStack(alignment: .top, spacing: 10) {
+                                Image(systemName: alert.type.icon)
+                                    .foregroundStyle(alert.severity == "advarsel" ? .orange : .blue)
+                                    .font(.subheadline)
+                                    .padding(.top, 1)
+                                Text(alert.message)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.primary)
+                                Spacer()
+                                if alert.severity == "advarsel" {
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundStyle(.orange)
+                                        .font(.caption)
+                                }
+                            }
+                            .padding(.vertical, 9)
+                            .overlay(alignment: .bottom) { Divider() }
+                        }
+                    }
+                    .padding(.horizontal, 14)
+                }
+                .background(.background, in: RoundedRectangle(cornerRadius: 14))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+                )
+                .shadow(color: .black.opacity(0.04), radius: 6, y: 2)
+            }
+
             OutfitSection(title: "Hode og hals", systemImage: "person.crop.circle", accentColor: .purple) {
                 ZoneRow(zone: result.garments.head, label: "Hode")
                 ZoneRow(zone: result.garments.neck, label: "Hals")

@@ -12,12 +12,30 @@ export type PrecipitationLevel = 'none' | 'light' | 'moderate' | 'heavy';
 
 export type WarningLevel = 'low' | 'medium' | 'high' | 'critical';
 
+export interface ForecastEntry {
+  time: string;
+  airTemp: number;
+  windSpeed: number;
+  precipitation: PrecipitationLevel;
+  precipitationProb: number;
+}
+
+export type ForecastAlertType = 'regn' | 'temperaturfall' | 'vindøkning';
+
+export interface ForecastAlert {
+  type: ForecastAlertType;
+  message: string;
+  startsInMinutes: number;
+  severity: 'info' | 'advarsel';
+}
+
 export interface WeatherInput {
   airTemp: number;
   windSpeed: number;
   humidity: number;
   precipitation: PrecipitationLevel;
   precipitationProb: number;
+  forecastWindow: ForecastEntry[];
 }
 
 export interface ActivityInput {
@@ -77,6 +95,7 @@ export interface RecommendationResult {
   notes: string[];
   safetyWarnings: SafetyWarning[];
   summary: string;
+  forecastAlerts: ForecastAlert[];
 }
 
 export interface Location {

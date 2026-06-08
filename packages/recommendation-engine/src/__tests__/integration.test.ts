@@ -12,6 +12,7 @@ const coldWinterWeather: WeatherInput = {
   humidity: 70,
   precipitation: 'none',
   precipitationProb: 10,
+  forecastWindow: [],
 };
 
 const warmSummerWeather: WeatherInput = {
@@ -20,6 +21,7 @@ const warmSummerWeather: WeatherInput = {
   humidity: 55,
   precipitation: 'none',
   precipitationProb: 0,
+  forecastWindow: [],
 };
 
 const rainyWeather: WeatherInput = {
@@ -28,6 +30,7 @@ const rainyWeather: WeatherInput = {
   humidity: 90,
   precipitation: 'moderate',
   precipitationProb: 80,
+  forecastWindow: [],
 };
 
 describe('getRecommendationFromWeather - result shape', () => {
@@ -150,5 +153,52 @@ describe('getRecommendationFromWeather - fjelltur domeneregel', () => {
     const activity: ActivityInput = { type: 'fjelltur', durationMinutes: 180 };
     const result = getRecommendationFromWeather(OSLO_LOCATION, warmSummerWeather, activity);
     expect(result.garments.backpackExtras).toContain('Regntøy i sekken (alltid i Norge)');
+  });
+});
+
+describe('getRecommendationFromWeather - forecastAlerts', () => {
+  test('ingen alerts når forecastWindow er tom', () => {
+    const activity: ActivityInput = { type: 'rusling', durationMinutes: 60 };
+    const result = getRecommendationFromWeather(OSLO_LOCATION, warmSummerWeather, activity);
+    expect(result.forecastAlerts).toEqual([]);
+  });
+
+  test('innkommende regn gir regn-varsel og regnjakke i sekken', () => {
+    const weatherDryNowRainLater: WeatherInput = {
+      ...warmSummerWeather,
+      forecastWindow: [
+        { time: '2024-01-01T11:00:00Z', airTemp: 21, windSpeed: 2, precipitation: 'moderate', precipitationProb: 85 },
+      ],
+    };
+    const activity: ActivityInput = { type: 'rusling', durationMinutes: 90 };
+    const result = getRecommendationFromWeather(OSLO_LOCATION, weatherDryNowRainLater, activity);
+    expect(result.forecastAlerts.some(a => a.type === 'regn')).toBe(true);
+    expect(result.garments.backpackExtras.some(e => e.includes('Regnjakke i sekken'))).toBe(true);
+  });
+
+  test('temperaturfall ≥5°C gir temperaturfall-varsel', () => {
+    const weatherWithTempDrop: WeatherInput = {
+      ...warmSummerWeather,
+      forecastWindow: [
+        { time: '2024-01-01T11:00:00Z', airTemp: 16, windSpeed: 2, precipitation: 'none', precipitationProb: 0 },
+        { time: '2024-01-01T12:00:00Z', airTemp: 14, windSpeed: 3, precipitation: 'none', precipitationProb: 0 },
+      ],
+    };
+    const activity: ActivityInput = { type: 'fjelltur', durationMinutes: 120 };
+    const result = getRecommendationFromWeather(OSLO_LOCATION, weatherWithTempDrop, activity);
+    expect(result.forecastAlerts.some(a => a.type === 'temperaturfall')).toBe(true);
+  });
+
+  test('regn som starter etter aktivitetens slutt gir ikke varsel', () => {
+    const weatherRainAfter: WeatherInput = {
+      ...warmSummerWeather,
+      forecastWindow: [
+        { time: '2024-01-01T11:00:00Z', airTemp: 21, windSpeed: 2, precipitation: 'none', precipitationProb: 0 },
+        { time: '2024-01-01T12:00:00Z', airTemp: 20, windSpeed: 2, precipitation: 'moderate', precipitationProb: 80 },
+      ],
+    };
+    const activity: ActivityInput = { type: 'rusling', durationMinutes: 60 };
+    const result = getRecommendationFromWeather(OSLO_LOCATION, weatherRainAfter, activity);
+    expect(result.forecastAlerts.some(a => a.type === 'regn')).toBe(false);
   });
 });

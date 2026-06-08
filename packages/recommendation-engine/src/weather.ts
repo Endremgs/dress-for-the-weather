@@ -1,4 +1,4 @@
-import type { WeatherInput, PrecipitationLevel, Location } from './types.js';
+import type { WeatherInput, PrecipitationLevel, ForecastEntry, Location } from './types.js';
 
 const MET_API_BASE = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
 const USER_AGENT = 'kledningsapp/1.0 github.com/kledningsapp';
@@ -32,7 +32,22 @@ function classifyPrecipitation(amount: number): PrecipitationLevel {
   return 'heavy';
 }
 
-export async function fetchWeather(location: Location): Promise<WeatherInput> {
+function extractForecastEntry(entry: MetTimeseries): ForecastEntry {
+  const inst = entry.data.instant.details;
+  const next1h = entry.data.next_1_hours;
+  const next6h = entry.data.next_6_hours;
+  const precipAmount = next1h?.details.precipitation_amount ?? next6h?.details.precipitation_amount ?? 0;
+  const precipProb = next1h?.details.probability_of_precipitation ?? next6h?.details.probability_of_precipitation ?? 0;
+  return {
+    time: entry.time,
+    airTemp: inst.air_temperature,
+    windSpeed: inst.wind_speed,
+    precipitation: classifyPrecipitation(precipAmount),
+    precipitationProb: precipProb,
+  };
+}
+
+export async function fetchWeather(location: Location, durationMinutes = 60): Promise<WeatherInput> {
   const url = `${MET_API_BASE}?lat=${location.lat.toFixed(4)}&lon=${location.lon.toFixed(4)}`;
 
   const res = await fetch(url, {
@@ -62,11 +77,18 @@ export async function fetchWeather(location: Location): Promise<WeatherInput> {
   const precipAmount = next1h?.details.precipitation_amount ?? next6h?.details.precipitation_amount ?? 0;
   const precipProb = next1h?.details.probability_of_precipitation ?? next6h?.details.probability_of_precipitation ?? 0;
 
+  // Collect hourly forecast entries covering the activity duration
+  const hoursNeeded = Math.ceil(durationMinutes / 60);
+  const forecastWindow: ForecastEntry[] = timeseries
+    .slice(1, hoursNeeded + 1)
+    .map(extractForecastEntry);
+
   return {
     airTemp: instant.air_temperature,
     windSpeed: instant.wind_speed,
     humidity: instant.relative_humidity,
     precipitation: classifyPrecipitation(precipAmount),
     precipitationProb: precipProb,
+    forecastWindow,
   };
 }

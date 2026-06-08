@@ -87,6 +87,25 @@ struct WatchRecommendationView: View {
                         }
                     }
                 }
+
+                // Forecast alerts
+                if !result.forecastAlerts.isEmpty {
+                    Divider()
+                    Text("Varsler")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    ForEach(result.forecastAlerts) { alert in
+                        HStack(spacing: 4) {
+                            Image(systemName: alert.type.icon)
+                                .font(.caption2)
+                                .foregroundStyle(alert.severity == "advarsel" ? .orange : .blue)
+                            Text(alert.message)
+                                .font(.caption2)
+                                .lineLimit(3)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                }
             }
             .padding()
         }
