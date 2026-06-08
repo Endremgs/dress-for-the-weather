@@ -1,0 +1,16 @@
+{
+  "name": "kledningsapp",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter recommendation-engine build && pnpm --filter web build",
+    "test": "pnpm --filter recommendation-engine test",
+    "lint": "pnpm -r lint"
+  }
+}
