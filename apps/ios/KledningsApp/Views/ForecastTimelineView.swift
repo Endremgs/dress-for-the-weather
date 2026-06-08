@@ -33,7 +33,7 @@ struct ForecastTimelineView: View {
                     ForEach(forecastWindow.prefix(hoursNeeded), id: \.time) { entry in
                         TimelineCell(
                             label: formatTime(entry.time),
-                            icon: conditionIcon(precipitation: entry.precipitation, cloudCover: entry.cloudCover),
+                            icon: conditionIcon(precipitation: entry.precipitation, cloudCover: entry.cloudCover ?? 0),
                             temp: entry.airTemp,
                             precipProb: entry.precipitationProb,
                             windSpeed: entry.windSpeed,
