@@ -104,6 +104,7 @@
 		F3A2106D5AC09540A384CDEE /* OutfitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutfitView.swift; sourceTree = "<group>"; };
 		F62091AA40D90A368F53CA78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FAA9BDA56394CE2BFF7E69BB /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		A3C8E0F2B5D7490E6C1A2B3C /* Oslo.gpx */ = {isa = PBXFileReference; lastKnownFileType = text; name = Oslo.gpx; path = Oslo.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -203,6 +204,7 @@
 				1BD8C5FBD863D8C9E2607249 /* KledningsWidget */,
 				15F9998DFD1FC67DD49937EF /* Shared */,
 				14BBD3388DC25D7398B9A179 /* Products */,
+				A3C8E0F2B5D7490E6C1A2B3C /* Oslo.gpx */,
 			);
 			sourceTree = "<group>";
 		};
