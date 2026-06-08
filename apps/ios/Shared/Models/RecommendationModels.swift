@@ -143,6 +143,28 @@ struct BodyZoneRecommendations: Codable {
     let backpackExtras: [String]
 }
 
+enum ForecastAlertType: String, Codable {
+    case regn
+    case temperaturfall
+    case vindøkning = "vindøkning"
+
+    var icon: String {
+        switch self {
+        case .regn:           return "cloud.rain.fill"
+        case .temperaturfall: return "thermometer.snowflake"
+        case .vindøkning:     return "wind"
+        }
+    }
+}
+
+struct ForecastAlert: Codable, Identifiable {
+    var id: String { "\(type.rawValue)-\(startsInMinutes)" }
+    let type: ForecastAlertType
+    let message: String
+    let startsInMinutes: Int
+    let severity: String
+}
+
 struct RecommendationResult: Codable {
     let weather: WeatherData
     let apparentTemp: Double
@@ -152,6 +174,7 @@ struct RecommendationResult: Codable {
     let notes: [String]
     let safetyWarnings: [SafetyWarning]
     let summary: String
+    let forecastAlerts: [ForecastAlert]
 }
 
 // MARK: - API request

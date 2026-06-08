@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const weather = await fetchWeather({ lat, lon });
+    const weather = await fetchWeather({ lat, lon }, activity.durationMinutes);
     const result = getRecommendationFromWeather({ lat, lon }, weather, activity, user);
     return NextResponse.json(result);
   } catch (err) {
