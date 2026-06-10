@@ -5,6 +5,7 @@ struct WatchRecommendationView: View {
     let activity: ActivityType
     let locationName: String
     let onChangeTap: () -> Void
+    var onStartDressing: (() -> Void)? = nil
 
     private var conditionIcon: String {
         switch result.weather.precipitation {
@@ -115,6 +116,22 @@ struct WatchRecommendationView: View {
                 Text(result.summary)
                     .font(.caption.weight(.semibold))
                     .fixedSize(horizontal: false, vertical: true)
+
+                // Start dressing mode (hands-free checklist)
+                if let onStartDressing {
+                    Button(action: onStartDressing) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "checklist")
+                                .font(.caption)
+                            Text("Kle på meg")
+                                .font(.caption.weight(.semibold))
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.blue)
+                    .padding(.top, 2)
+                }
 
                 Divider()
 

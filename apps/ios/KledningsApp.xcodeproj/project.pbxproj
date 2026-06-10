@@ -36,6 +36,7 @@
 		E5102984A3AF7F2F4C33ADB7 /* RecommendationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D1092A797F64E97022B74 /* RecommendationModels.swift */; };
 		EA8A6DA94162561693F2D467 /* WatchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AF283DD1A5F16CDCBD2BB4 /* WatchContentView.swift */; };
 		651108A553E447A6972F7ED8 /* WatchOverrideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* WatchDressingChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E2F3A4B5C6D7E8F901A2B3 /* WatchDressingChecklistView.swift */; };
 		F0E3C39DE174D99CB2B61954 /* RecommendationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4D1092A797F64E97022B74 /* RecommendationModels.swift */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +102,7 @@
 		9785278406AABC7796715CE8 /* KledningsWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KledningsWatchApp.swift; sourceTree = "<group>"; };
 		A114F16314D10F7FC40458C1 /* WatchRecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRecommendationView.swift; sourceTree = "<group>"; };
 		18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchOverrideView.swift; sourceTree = "<group>"; };
+		D1E2F3A4B5C6D7E8F901A2B3 /* WatchDressingChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchDressingChecklistView.swift; sourceTree = "<group>"; };
 		AC25F09BF173B94CDA5AFA3A /* KledningsApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KledningsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF4D1092A797F64E97022B74 /* RecommendationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationModels.swift; sourceTree = "<group>"; };
 		E9961AE237B79330E7FB95A4 /* ActivityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPickerView.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				28AF283DD1A5F16CDCBD2BB4 /* WatchContentView.swift */,
 				A114F16314D10F7FC40458C1 /* WatchRecommendationView.swift */,
 				18088986DFFC4427B2A62DDE /* WatchOverrideView.swift */,
+				D1E2F3A4B5C6D7E8F901A2B3 /* WatchDressingChecklistView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				EA8A6DA94162561693F2D467 /* WatchContentView.swift in Sources */,
 				69A51B17BF87069F42D9EE8D /* WatchRecommendationView.swift in Sources */,
 				651108A553E447A6972F7ED8 /* WatchOverrideView.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* WatchDressingChecklistView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

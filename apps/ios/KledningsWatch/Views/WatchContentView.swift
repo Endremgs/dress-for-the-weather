@@ -61,6 +61,7 @@ final class WatchViewModel: ObservableObject {
 struct WatchContentView: View {
     @StateObject private var vm = WatchViewModel()
     @State private var showPicker = false
+    @State private var showDressing = false
 
     var body: some View {
         Group {
@@ -77,7 +78,8 @@ struct WatchContentView: View {
                     result: result,
                     activity: vm.selectedActivity,
                     locationName: vm.isManualMode ? "Manuell modus" : vm.locationName,
-                    onChangeTap: { showPicker = true }
+                    onChangeTap: { showPicker = true },
+                    onStartDressing: { showDressing = true }
                 )
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -136,6 +138,16 @@ struct WatchContentView: View {
                 },
                 onReset: { Task { await vm.resetToOsloWeather() } }
             )
+        }
+        .sheet(isPresented: $showDressing) {
+            if let result = vm.result {
+                NavigationStack {
+                    WatchDressingChecklistView(
+                        result: result,
+                        onDone: { showDressing = false }
+                    )
+                }
+            }
         }
     }
 }
